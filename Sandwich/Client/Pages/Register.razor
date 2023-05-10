@@ -1,0 +1,349 @@
+﻿@page "/register"
+@using System.Net.Http.Headers
+@inject HttpClient Http
+@inject NavigationManager NavManager;
+
+<html>
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto Condensed', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .card-wrapper {
+            min-height: 600px;
+            min-width: 350px;
+            border-radius: 10px;
+            position: absolute;
+            left: 50%;
+            top: 100px;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(13px);
+            box-shadow: 0 0 20px -2px black;
+            /*display: flex;*/
+            justify-content: center;
+            flex-direction: column;
+            color: rgba(18,18,18,0.85);
+            vertical-align: middle;
+            align-self: center;
+            width:600px;
+        }
+
+        .call-to-action {
+            text-align: center;
+            padding: 30px 0 30px 0;
+            background: black;
+            border-radius: 10px 10px 0 0;
+            color: white;
+            opacity: 40%;
+        }
+
+        .card-wrapper form {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .card-wrapper form .field {
+                width: 100%;
+                position: relative;
+                font-size: 18px;
+                padding: 7px 30px;
+                white-space: nowrap;
+            }
+
+                .card-wrapper form .field::after {
+                    content: "";
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    top: 100%;
+                    height: 1px;
+                    width: 85%;
+                    padding-top: 5px;
+                    border-top: 1px solid rgba(18,18,18,0.6);
+                }
+
+            .card-wrapper form a {
+                margin-right: 10%;
+                margin-top: 10px;
+                text-align: right;
+                font-size: 16px;
+                text-decoration: none;
+                color: rgba(18,18,18,0.7);
+            }
+
+                .card-wrapper form a span {
+                    border-bottom: 1px solid transparent;
+                    transition: all 0.3s ease;
+                }
+
+                .card-wrapper form a:hover span {
+                    color: #121212;
+                    border-bottom-color: #121212;
+                }
+
+            .card-wrapper form .field i {
+                font-size: 22px;
+                height: 30px;
+                width: 30px;
+                vertical-align: middle;
+                text-align: left;
+            }
+
+            .card-wrapper form .field label {
+                width: 100%;
+                font-size: 17px;
+                margin-bottom: 20px;
+            }
+
+            .card-wrapper form .field input {
+                border: 0;
+                background: transparent;
+                padding: 0 5px;
+                color: inherit;
+                font-family: inherit;
+                font-size: inherit;
+                height: 30px;
+                width: calc(100% - 50px);
+                vertical-align: middle;
+            }
+
+                .card-wrapper form .field input:focus {
+                    outline: none;
+                }
+
+                .card-wrapper form .field input::placeholder {
+                    color: rgba(18,18,18,0.7);
+                }
+
+        #register-button {
+            margin: 20px 0;
+            width: 80%;
+            height: 40px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            #register-button:hover {
+                background: rgba(18,18,18,0.3);
+                color: rgba(255,255,255,0.8);
+            }
+
+        .log-in {
+            text-align: center;
+        }
+
+            .log-in a {
+                text-decoration: none;
+                color: inherit;
+                position: relative;
+                top: 10px;
+                border-bottom: 1px solid transparent;
+                transition: all 0.3s ease;
+            }
+
+                .log-in a:hover {
+                    color: #121212;
+                    border-bottom-color: #121212;
+                }
+
+        .bg {
+            animation: slide 3s ease-in-out infinite alternate;
+            background-image: linear-gradient(-60deg, white 50%, DarkSlateBlue 50%);
+            bottom: 0;
+            left: -50%;
+            opacity: .5;
+            position: fixed;
+            right: -50%;
+            top: 0;
+            z-index: -1;
+        }
+
+        .bg2 {
+            animation-direction: alternate-reverse;
+            animation-duration: 4s;
+        }
+
+        .bg3 {
+            animation-duration: 5s;
+        }
+
+        @@keyframes slide {
+            0% {
+                transform: translateX(-25%);
+            }
+
+            100% {
+                transform: translateX(25%);
+            }
+        }
+
+        p {
+            text-align: center;
+            font-size: 22px;
+            color: darkred;
+        }
+
+        #error {
+            color: red
+        }
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="swiper-container">
+        <div class="bg"></div>
+        <div class="bg bg2"></div>
+        <div class="bg bg3"></div>
+    </div>
+    <div class='card-wrapper'>
+        <h1 class='call-to-action'>Register</h1>
+        <form>
+
+            <div class="input-group">
+                <div class='field' id="@NamErrore">
+                    <label for='name'>Name</label><br>
+                    <i class='fa fa-vcard'></i>
+                    <input type='text'
+                           name='name'
+                           placeholder='type your name'
+                           spellcheck='false'
+                           @onchange="@((ChangeEventArgs e) =>{ Name = e.Value.ToString(); NamErrore=null;})" @oninput="@((e) => { Name=(string)e.Value;})" />
+                </div>
+                <div class='field' id="@SurErrore">
+                    <label for='surname'>Surname</label><br>
+                    <i class='fa fa-vcard-o'></i>
+                    <input type='text'
+                           name='surname'
+                           placeholder='type your surname'
+                           spellcheck='false'
+                           @onchange="@((ChangeEventArgs e) =>{ Surname = e.Value.ToString(); SurErrore=null;})" @oninput="@((e) => { Surname=(string)e.Value;})" />
+                </div>
+            </div>
+
+            <div class='field' id="@UserErrore">
+                <label for='username'>Username</label><br>
+                <i class=' fa fa-check-circle'></i>
+                <input type='text'
+                       name='username'
+                       placeholder='type your username'
+                       spellcheck='false'
+                       @onchange="@((ChangeEventArgs e) =>{ _Username = e.Value.ToString(); UserErrore=null;})" @oninput="@((e) => { _Username=(string)e.Value;})" />
+            </div>
+
+            <div class='field' id="@MailErrore">
+                <label for='mail'>Mail</label><br>
+                <i class='glyphicon glyphicon-envelope'></i>
+                <input type='text'
+                       name='mail'
+                       placeholder='type your mail'
+                       spellcheck='false'
+                       @onchange="@((ChangeEventArgs e) =>{ _Mail = e.Value.ToString(); MailErrore=null;})" @oninput="@((e) => { _Mail=(string)e.Value;})" />
+            </div>
+            <div class="input-group">
+                <div class='field' id="@PswErrore">
+                    <label for='password'>Password</label><br>
+                    <i class='fa fa-lock'></i>
+                    <input type='password'
+                           name='password'
+                           placeholder='type your password'
+                           spellcheck='false'
+                           @onchange="@((ChangeEventArgs e) =>{ _Password = e.Value.ToString(); PswErrore=null;})" @oninput="@((e) => { _Password=(string)e.Value;})" />
+                </div>
+                <div class='field' id="@PswErrore">
+                    <label for='password'>Confirm Password</label><br>
+                    <i class='bx bx-lock-alt'></i>
+                    <input type='password'
+                           name='password'
+                           placeholder='confirm your password'
+                           spellcheck='false'
+                           @onchange="@((ChangeEventArgs e) =>{ Confirm = e.Value.ToString(); PswErrore=null;})" @oninput="@((e) => { Confirm=(string)e.Value;})" />
+                </div>
+            </div>
+            <input type='button' id='register-button' value='REGISTRA' @onclick="Registra" />
+        </form>
+        <div>
+            <p>@Error</p>
+        </div>
+        <div class='log-in'>
+            Or Login Using<br>
+            <a href='/'>LOG IN</a>
+        </div>
+    </div>
+</body>
+</html>
+@code {
+    public string Error { get; set; }
+    public string Name { get; set; } = "";
+    public string Surname { get; set; } = "";
+    public string _Username { get; set; } = "";
+    public string _Mail { get; set; } = "";
+    public string _Password { get; set; } = "";
+    public string Confirm { get; set; } = "";
+
+    public string PswErrore { get; set; }
+    public string NamErrore{ get; set; }
+    public string SurErrore{ get; set; }
+    public string MailErrore { get; set; }
+    public string UserErrore { get; set; }
+
+
+    public async Task Registra()
+    {
+        Error = null;
+        if (_Password == Confirm && Name != "" && Surname != "" && _Username != "" && _Mail != "" && _Password != "")
+        {
+            List<Utente>? l = await Http.GetFromJsonAsync<List<Utente>>($"/api/Utente/GetByMail?Mail={_Mail}");
+            if (l.Count > 0)
+            {
+                Error = "Email già in uso";
+                MailErrore = "error";
+            }
+            else
+            {
+                Utente utente = new Utente { Mail = _Mail, Nome = Name, Cognome = Surname, Username = _Username, Password = _Password };
+                string apiurl = "/api/Utente";
+                HttpResponseMessage response = await Http.PostAsJsonAsync(apiurl, utente);
+                NavManager.NavigateTo("/");
+            }
+
+        }
+        else
+        {
+            if (Name != "" && Surname != "" && _Username != "" && _Mail != "" )
+            {
+                PswErrore = "error";
+                Error = "Password non valida";
+            }
+            else
+            {
+                if (Name == "")
+                    NamErrore = "error";
+                if (Surname == "")
+                    SurErrore = "error";
+                if (_Username == "")
+                    UserErrore = "error";
+                if (_Mail == "")
+                    MailErrore = "error";
+                Error = "Riempire tutti i campi";
+            }   
+        }
+    
+    }
+}

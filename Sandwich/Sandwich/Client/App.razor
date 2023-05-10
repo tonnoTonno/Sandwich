@@ -1,0 +1,20 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div style="display:grid; align-items:center; grid-template-columns: 1fr 1fr 1fr; column-gap:5px">
+                  <div>
+                    <img src="https://drive.google.com/uc?export=view&id=1pi-60jdhtVqRRqOl2njrTKV54-nX1v4V">
+                  </div>
+                  <div>
+                    <h1 >Errore.</h1>
+                    <p >Qualcosa è andato storto</p>
+                  </div>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>
