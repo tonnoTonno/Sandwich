@@ -14,4 +14,47 @@ namespace Sandwich.Shared
         public string? Username { get; set; }
         public string? Password { get; set; }
     }
+
+    public class Test
+    {
+        public int? Id_test { get; set; }
+        public string? creatore { get; set; }
+        public bool? Aperto { get; set; }
+        public int? Durata { get; set; }
+    }
+
+    public class Tentativo
+    {
+        public int? codiceTentativo { get; set; }
+        public string? utente { get; set; }
+        public DateTime? dataOraInizio { get; set; }
+        public DateTime? dataOraFine { get; set; }
+        public float? risulatato{ get; set; }
+        public int? codiceTest{ get; set; }
+    }
+
+    public class Opzione
+    {
+        public int? ProgressioneOpzione { get; set; }
+        public string? Testo { get; set; }
+        public bool? OpzioneCorretta { get; set; }
+        public int? ProgDomanda { get; set; }
+
+    }
+
+    public class Domanda
+    {
+        public int? Progressivo { get; set; }
+        public string? Consegna { get; set; }
+        public float? Punteggio { get; set; }
+        public int? IdTest { get; set; }
+
+    }
+
+    public class Immagine
+    {
+        public string? CodificaImmagine { get; set; }
+        public int? IdDomanda { get; set; }
+
+    }
 }
