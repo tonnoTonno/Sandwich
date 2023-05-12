@@ -1,10 +1,8 @@
-﻿@page "/abc"
-
-<style>
-    html {
+﻿<style>		 
+html {
   height: 100%;
   background-color:#090a0f;
-  background: radial-gradient(ellipse at bottom, rgba(27, 39, 53, 1), rgba(9, 10, 15, 1));
+  background: radial-gradient(ellipse at bottom, #a484d3,  #661BAC);;
   overflow: hidden;
 }
 body {
@@ -15,11 +13,10 @@ background:transparent;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
   height: 100vh;
   height: 100vh;
-  width: 100vw;
-  min-width: 100vw;
+  width: 100vh;
+  min-width: 100%;
   z-index:-1;
 }
 
@@ -34,21 +31,7 @@ background:transparent;
 
 .blob{
   border-radius: 50%;
-  background: #661BAC;
-  /* Other sample colors:
-  Orange: #e8630a
-  Pink: #EA3281
-  Fuscia: #E71669
-  Purple: #661BAC
-  Yellow: #FDC600
-  Kermit green: #75AC25
-  Light blue: #3283B5
-  Dark blue: #0A5D9A
-  Gunmetal: #232F37
-  BGLight: #1B2735
-  BGDark: #090a0f
-  Want more colors? check out https://coolors.co/ for inspiration.
-  */
+  background: radial-gradient(ellipse at bottom, #aaaaaa,  #e2e1e5);
   position:absolute;
 }
 
@@ -203,11 +186,10 @@ background:transparent;
    border-radius: 38% 52% 75% 36% / 50% 40% 50% 60%;
   }
 }
-
-
-
 </style>
-<div class="lamp">
+
+<div>
+	<div class="lamp">
     <div class="lava">
       <div class="blob"></div>
       <div class="blob"></div>
@@ -219,7 +201,6 @@ background:transparent;
       <div class="blob"></div>
       <div class="blob top"></div>
       <div class="blob bottom"></div>
-      
     </div>
 </div>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -231,6 +212,7 @@ background:transparent;
     </filter>
   </defs>
 </svg>
+</div>
 
 @code {
 
