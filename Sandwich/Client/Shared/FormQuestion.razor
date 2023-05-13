@@ -188,10 +188,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
 <div class="container" >
     <!-- Quiz section -->
-    <div class="quiz" style="border:2px solid; border-radius:50px; padding:25px;background:green">
+    <div class="quiz" style="border:2px solid; border-radius:50px; padding:25px;background:#D4ADFC;  width:100%">
         <form class="quiz-form">
             <div class="quiz-form__quiz">
                 <p class="quiz-form__question">
+                    <Remove></Remove>
                     <InputAnswer Placeholder="Question"></InputAnswer>
                 </p>
                 <label class="quiz-form__ans" >
@@ -199,11 +200,11 @@
                     <span class="design"></span>
                     <InputAnswer Placeholder="Answer"></InputAnswer>
                     <b></b>
-                    <div class="row">
-                        <Plus_Minus btp="subtract-icon" text="Subtract an answer"></Plus_Minus>
+                    <div style=" display: flex;justify-content: center;"> 
+                        <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
                     </div>
                 </label>
-                <div style="justify-content: center;position:relative;flex-direction: column;align-self:center;position: relative;left: 45%;">
+                <div style="display: flex;justify-content: center;">
                     <Plus_Minus btp="add-icon" text="Add an answer"></Plus_Minus>
                 </div>
 
