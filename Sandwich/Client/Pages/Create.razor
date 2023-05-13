@@ -1,0 +1,74 @@
+﻿@page "/create"
+<style>
+
+    body{
+        font-family: "Montserrat", sans-serif;
+        font-weight: 300;
+        color: #fff;
+        width: 100%;
+        height: 100%;
+    }
+
+    .container {
+        max-width: 50rem;
+        width: 90vw;
+        margin: 2rem auto;
+        background:transparent;
+    }
+
+    .heading__text {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 300;
+    }
+
+    .submit {
+        border: none;
+        border-radius: 100vh;
+        padding: 0.8rem 1.5rem;
+        background: #117eeb;
+        color: #fff;
+        font-family: inherit;
+        text-transform: uppercase;
+        font-size: 1rem;
+        font-weight: 300;
+        display: block;
+        margin: 1rem auto 4rem auto;
+        cursor: pointer;
+        transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+
+        .submit:focus {
+            outline: none;
+        }
+
+        .submit:hover {
+            transform: translateY(-2px) scale(1.015);
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35);
+        }
+
+        .submit:active {
+            transform: translateY(0) scale(1);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+<Bolle left_="15%"></Bolle>
+<div class="container">
+    <div class="heading">
+        <h1 class="heading__text">Quiz</h1>
+    </div>
+
+    <!-- Foreach -->
+    <FormAddQuestion ></FormAddQuestion>
+    <FormAddQuestion></FormAddQuestion>
+
+
+    <Plus_Minus btp="add-icon" text="Add an question"></Plus_Minus>
+    <button class="submit" type="submit">Submit</button>
+</div>
+@code {
+
+}

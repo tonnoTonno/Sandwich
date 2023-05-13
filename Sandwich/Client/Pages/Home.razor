@@ -1,17 +1,17 @@
 ﻿@page "/home"
 @inject NavigationManager NavManager;
-<Bolle></Bolle>
+<Bolle left_="50%"></Bolle>
 <body style="background-color:transparent">
 
     <div class="container">
         <div @onclick="View" class="col-lg">
             <Choose Title="View" Description="View all quizzes" idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="#5f51fe" Colore2="#21A5FF"></Choose>
         </div>
-        <div @onclick="View" class="col-lg">
-        <Choose Title="Fava" Description="favino" idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="" Colore2="#21A5FF"></Choose>
+        <div @onclick="Create" class="col-lg">
+            <Choose Title="Create" Description="Create a new quiz" idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="" Colore2="#21A5FF"></Choose>
         </div>
-            <div @onclick="View" class="col-lg">
-        <Choose Title="Fava" Description="favino" idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="" Colore2="#21A5FF"></Choose>
+        <div @onclick="Join" class="col-lg">
+            <Choose Title="Join" Description="Join " idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="" Colore2="#21A5FF"></Choose>
         </div>
     </div>
 </body>
