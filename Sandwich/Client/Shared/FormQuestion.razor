@@ -76,81 +76,13 @@
             margin-bottom: 0.5rem;
         }
 
-    input[type="radio"] {
-        opacity: 0;
-        position: absolute;
-        left: 15px;
-        z-index: -1;
-    }
-
-    .design {
-        width: 1rem;
-        height: 1rem;
-        border: 1px solid #a1a9bd;
-        border-radius: 100%;
-        margin-right: 1rem;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-        .design::before,
-        .design::after {
-            content: "";
-            position: absolute;
-            width: inherit;
-            height: inherit;
-            border-radius: inherit;
-            transform: scale(0);
-            transform-origin: center center;
-        }
-
-        .design:before {
-            background: #a1a9bd;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .design::after {
-            background: #117eeb;
-            opacity: 0.4;
-            transition: 0.6s;
-        }
 
     .text {
         backface-visibility: hidden;
         transition: transform 200ms ease-in;
     }
 
-    input[type="radio"]:hover ~ .text {
-        transform: translateX(0.4rem);
-    }
-
-    input[type="radio"]:hover .quiz-form__ans {
-        color: #117eeb;
-    }
-
-    input[type="radio"]:checked + .design::before {
-        opacity: 1;
-        transform: scale(0.6);
-    }
-
-    input[type="radio"]:hover + .design,
-    input[type="radio"]:focus + .design {
-        border: 1px solid #117eeb;
-    }
-
-        input[type="radio"]:hover + .design:before,
-        input[type="radio"]:focus + .design:before {
-            background: #117eeb;
-        }
-
-        input[type="radio"]:focus + .design::after,
-        input[type="radio"]:active + .design::after {
-            opacity: 0.1;
-            transform: scale(2);
-        }
+    
 
     .submit {
         border: none;
@@ -182,7 +114,10 @@
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
+    input[type='radio']{
+        margin:5px;
 
+    }
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -195,16 +130,21 @@
                     <Remove></Remove>
                     <InputAnswer Placeholder="Question"></InputAnswer>
                 </p>
-                <label class="quiz-form__ans" >
-                    <input type="radio" checked />
-                    <span class="design"></span>
-                    <InputAnswer Placeholder="Answer"></InputAnswer>
-                    <b></b>
-                    <div style=" display: flex;justify-content: center;"> 
-                        <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
-                    </div>
-                </label>
-                <div style="display: flex;justify-content: center;">
+                
+                    @foreach (Opzione o in Opzioni)
+                    {
+                    <label class="quiz-form__ans" style="width:100%">
+                            <span></span>
+                                <input type="radio" name="Opzione"/>
+                                <InputAnswer Placeholder="Answer"></InputAnswer>
+                            <b></b>
+                            <div style=" display: flex;justify-content: center;">
+                                <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
+                            </div>
+                    </label>
+                    }
+                
+                <div style="display: flex;justify-content: center;" @onclick="AddCount">
                     <Plus_Minus btp="add-icon" text="Add an answer"></Plus_Minus>
                 </div>
 
@@ -212,3 +152,12 @@
         </form>
     </div>
 </div>
+
+@code{
+
+    public List<Opzione> Opzioni = new List<Opzione>() { new Opzione() };
+    public void AddCount()
+    {
+        Opzioni.Add(new Opzione());
+    }
+}

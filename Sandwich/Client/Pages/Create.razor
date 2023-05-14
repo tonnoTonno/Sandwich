@@ -56,27 +56,31 @@
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
 <Bolle left_="15%"></Bolle>
-<div class="heading">
-    <h1 class="heading__text">Quiz</h1>
-</div>
-<div class="container" style="display: flex;justify-content: center;">
-    <div style="justify-content: center;">
-        @foreach (Domanda d in Domande)
-        {
-            <FormQuestion></FormQuestion>
-        }
-        <div style="display:flex;justify-content: center;" >
-            <Plus_Minus btp="add-icon" text="Add an question"></Plus_Minus>
-        </div>
-        <div >
-            <button class="submit" type="submit">Submit</button>
+<body style="overflow-y:scroll;position:fixed;height:100%;margin-top:-150px">
+    <div class="heading" style="margin-top:30px">
+        <h1 class="heading__text">Quiz</h1>
+    </div>
+    <div class="container" style="display: flex;justify-content: center;">
+        <div style="justify-content: center;">
+            @foreach (Domanda d in Domande)
+            {
+                <FormQuestion></FormQuestion>
+            }
+            <div style="display:flex;justify-content: center;" @onclick="AddQuestion">
+                <Plus_Minus btp="add-icon" text="Add an question"></Plus_Minus>
+            </div>
+            <div>
+                <button class="submit" type="submit">Submit</button>
+            </div>
         </div>
     </div>
+</body>
     
-    
-    
-</div>
+
 @code {
     List<Domanda> Domande = new List<Domanda>{new Domanda()};
-
+    public void AddQuestion()
+    {
+        Domande.Add(new Domanda());
+    }
 }
