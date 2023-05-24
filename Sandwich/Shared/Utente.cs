@@ -35,7 +35,7 @@ namespace Sandwich.Shared
 
     public class Opzione
     {
-        public int? ProgressioneOpzione { get; set; }
+        public int? Id { get; set; }
         public string? Testo { get; set; }
         public bool? OpzioneCorretta { get; set; }
         public int? ProgDomanda { get; set; }

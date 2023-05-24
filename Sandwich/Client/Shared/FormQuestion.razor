@@ -136,7 +136,7 @@
                     <label class="quiz-form__ans" style="width:100%">
                             <span></span>
                                 <input type="radio" name="Opzione"/>
-                                <InputAnswer Placeholder="Answer"></InputAnswer>
+                                <InputAnswer Placeholder="Answer" id="@o.Id.ToString()"></InputAnswer>
                             <b></b>
                             <div style=" display: flex;justify-content: center;">
                                 <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
@@ -154,10 +154,11 @@
 </div>
 
 @code{
-
     public List<Opzione> Opzioni = new List<Opzione>() { new Opzione() };
+    public int i = 1;
     public void AddCount()
     {
-        Opzioni.Add(new Opzione());
+        Opzioni.Add(new Opzione() { Id = i });
+    i++;
     }
 }
