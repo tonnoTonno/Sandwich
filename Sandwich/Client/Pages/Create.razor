@@ -64,13 +64,13 @@
         <div style="justify-content: center;">
             @foreach (Domanda d in Domande)
             {
-                <FormQuestion></FormQuestion>
+                <FormQuestion Opzioni=@d.Opzioni Domanda=@d OnOpzioneAggiunta="OpzioneAggiunta"></FormQuestion>
             }
             <div style="display:flex;justify-content: center;" @onclick="AddQuestion">
                 <Plus_Minus btp="add-icon" text="Add an question"></Plus_Minus>
             </div>
             <div>
-                <button class="submit" type="submit">Submit</button>
+                <button class="submit" type="submit" @onclick="AddQuiz">Submit</button>
             </div>
         </div>
     </div>
@@ -82,5 +82,13 @@
     public void AddQuestion()
     {
         Domande.Add(new Domanda());
+    }
+    public void AddQuiz()
+    {
+        //metodi per caricare le liste sul db
+    }
+
+    public void OpzioneAggiunta(Opzione opt)
+    {
     }
 }

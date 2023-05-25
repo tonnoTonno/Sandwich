@@ -128,7 +128,7 @@
             <div class="quiz-form__quiz">
                 <p class="quiz-form__question">
                     <Remove></Remove>
-                    <InputAnswer Placeholder="Question"></InputAnswer>
+                    <InputQuestion_ Domanda="@Domanda"></InputQuestion_>
                 </p>
                 
                     @foreach (Opzione o in Opzioni)
@@ -136,7 +136,7 @@
                     <label class="quiz-form__ans" style="width:100%">
                             <span></span>
                                 <input type="radio" name="Opzione"/>
-                                <InputAnswer Placeholder="Answer" id="@o.Id.ToString()"></InputAnswer>
+                                <InputAnswer Opzione="@o"></InputAnswer>
                             <b></b>
                             <div style=" display: flex;justify-content: center;">
                                 <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
@@ -154,11 +154,19 @@
 </div>
 
 @code{
-    public List<Opzione> Opzioni = new List<Opzione>() { new Opzione() };
-    public int i = 1;
-    public void AddCount()
+    [Parameter]
+    public List<Opzione> Opzioni { get; set; } = new List<Opzione>() { new Opzione() };
+
+    [Parameter]
+    public Domanda Domanda { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Opzione> OnOpzioneAggiunta { get; set; }
+
+    public async void AddCount()
     {
-        Opzioni.Add(new Opzione() { Id = i });
-    i++;
+        var opt = new Opzione();
+        Opzioni.Add(opt);
+        await OnOpzioneAggiunta.InvokeAsync(opt);
     }
 }

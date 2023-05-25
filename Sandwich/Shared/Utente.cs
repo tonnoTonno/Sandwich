@@ -49,6 +49,8 @@ namespace Sandwich.Shared
         public float? Punteggio { get; set; }
         public int? IdTest { get; set; }
 
+        public List<Opzione> Opzioni { get; set; } = new() { new() };
+
     }
 
     public class Immagine
