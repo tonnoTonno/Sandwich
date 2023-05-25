@@ -57,8 +57,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
 <Bolle left_="15%"></Bolle>
 <body style="overflow-y:scroll;position:fixed;height:100%;margin-top:-150px">
-    <div class="heading" style="margin-top:30px">
-        <h1 class="heading__text">Quiz</h1>
+    <div class="heading" style="margin-top:30px;display: flex;justify-content: center;">
+        <input class="heading__text" placeholder="Quiz" style="border:hidden;background:transparent;" @bind-value="@QuizName"/>
     </div>
     <div class="container" style="display: flex;justify-content: center;">
         <div style="justify-content: center;">
@@ -79,13 +79,14 @@
 
 @code {
     List<Domanda> Domande = new List<Domanda>{new Domanda()};
+    public string QuizName;
     public void AddQuestion()
     {
         Domande.Add(new Domanda());
     }
     public void AddQuiz()
     {
-        //metodi per caricare le liste sul db
+        //inserimento quiz
     }
 
     public void OpzioneAggiunta(Opzione opt)
