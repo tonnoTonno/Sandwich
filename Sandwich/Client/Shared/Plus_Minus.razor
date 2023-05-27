@@ -95,13 +95,13 @@
         top: calc(50% - 2px);
     }
 </style>
-<button class="icon-btn add-btn">
+<button class="icon-btn add-btn" type="button">
     <div class="@btp"></div>
     <div class="btn-txt">@text</div>
 </button>
 @code {
     [Parameter]
-    public string? text{ get; set; }
+    public string? text { get; set; }
     [Parameter]
-    public string btp{ get; set; } 
+    public string btp { get; set; }
 }

@@ -16,7 +16,7 @@
         font-family: "Montserrat", sans-serif;
         font-weight: 300;
         color: #fff;
-        background:transparent;
+        background: transparent;
     }
 
     .container {
@@ -82,7 +82,7 @@
         transition: transform 200ms ease-in;
     }
 
-    
+
 
     .submit {
         border: none;
@@ -114,36 +114,37 @@
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
-    input[type='radio']{
-        margin:5px;
-
+    input[type='radio'] {
+        margin: 5px;
     }
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
-<div class="container" >
+<div class="container">
     <!-- Quiz section -->
     <div class="quiz" style="border:2px solid; border-radius:50px; padding:25px;background:#D4ADFC;  width:100%">
         <form class="quiz-form">
             <div class="quiz-form__quiz">
                 <p class="quiz-form__question">
-                    <Remove></Remove>
+                    <div @onclick="(()=>RemoveQuest(Domanda))">
+                        <Remove></Remove>
+                    </div>
                     <InputQuestion_ Domanda="@Domanda"></InputQuestion_>
                 </p>
-                
-                    @foreach (Opzione o in Opzioni)
-                    {
+
+                @foreach (Opzione o in Opzioni)
+                {
                     <label class="quiz-form__ans" style="width:100%">
-                            <span></span>
-                                <input type="radio" name="Opzione"  @bind-value="@o.OpzioneCorretta"/>
-                                <InputAnswer Opzione="@o"></InputAnswer>
-                            <b></b>
-                            <div style=" display: flex;justify-content: center;">
-                                <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
-                            </div>
+                        <span></span>
+                        <input type="radio" name="Opzione" @bind-value="@o.OpzioneCorretta" />
+                        <InputAnswer Opzione="@o"></InputAnswer>
+                        <b></b>
+                        <div style=" display: flex;justify-content: center;" @onclick="(() => Remove(o))">
+                            <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
+                        </div>
                     </label>
-                    }
-                
+                }
+
                 <div style="display: flex;justify-content: center;" @onclick="AddCount">
                     <Plus_Minus btp="add-icon" text="Add an answer"></Plus_Minus>
                 </div>
@@ -153,7 +154,7 @@
     </div>
 </div>
 
-@code{
+@code {
     [Parameter]
     public List<Opzione> Opzioni { get; set; } = new List<Opzione>() { new Opzione() };
 
@@ -161,12 +162,20 @@
     public Domanda Domanda { get; set; } = new();
 
     [Parameter]
-    public EventCallback<Opzione> OnOpzioneAggiunta { get; set; }
+    public EventCallback<Domanda> RemoveDomanda { get; set; }
 
     public async void AddCount()
     {
         var opt = new Opzione();
         Opzioni.Add(opt);
-        await OnOpzioneAggiunta.InvokeAsync(opt);
+    }
+
+    public async void Remove(Opzione o)
+    {
+        Opzioni.Remove(o);
+    }
+    public async void RemoveQuest(Domanda a)
+    {
+        await RemoveDomanda.InvokeAsync(a);
     }
 }

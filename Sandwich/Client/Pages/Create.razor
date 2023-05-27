@@ -1,7 +1,7 @@
 ﻿@page "/create"
 <style>
 
-    body{
+    body {
         font-family: "Montserrat", sans-serif;
         font-weight: 300;
         color: #fff;
@@ -13,7 +13,7 @@
         max-width: 50rem;
         width: 90vw;
         margin: 2rem auto;
-        background:transparent;
+        background: transparent;
     }
 
     .heading__text {
@@ -58,13 +58,13 @@
 <Bolle left_="15%"></Bolle>
 <body style="overflow-y:scroll;position:fixed;height:100%;margin-top:-150px">
     <div class="heading" style="margin-top:30px;display: flex;justify-content: center;">
-        <input class="heading__text" placeholder="Quiz" style="border:hidden;background:transparent;" @bind-value="@QuizName"/>
+        <input class="heading__text" placeholder="Quiz" style="border:hidden;background:transparent;" @bind-value="@QuizName" />
     </div>
     <div class="container" style="display: flex;justify-content: center;">
         <div style="justify-content: center;">
             @foreach (Domanda d in Domande)
             {
-                <FormQuestion Opzioni=@d.Opzioni Domanda=@d OnOpzioneAggiunta="OpzioneAggiunta"></FormQuestion>
+                <FormQuestion Opzioni=@d.Opzioni Domanda=@d RemoveDomanda="RemoveDomanda"></FormQuestion>
             }
             <div style="display:flex;justify-content: center;" @onclick="AddQuestion">
                 <Plus_Minus btp="add-icon" text="Add an question"></Plus_Minus>
@@ -75,10 +75,10 @@
         </div>
     </div>
 </body>
-    
+
 
 @code {
-    List<Domanda> Domande = new List<Domanda>{new Domanda()};
+    List<Domanda> Domande = new List<Domanda> { new Domanda() };
     public string QuizName;
     public void AddQuestion()
     {
@@ -89,7 +89,8 @@
         //inserimento quiz
     }
 
-    public void OpzioneAggiunta(Opzione opt)
+    public void RemoveDomanda(Domanda a)
     {
+        Domande.Remove(a);
     }
 }
