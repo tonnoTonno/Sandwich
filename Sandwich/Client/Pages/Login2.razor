@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject HttpClient Http
 @inject NavigationManager NavManager;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <style>
 		.main {
@@ -181,7 +182,7 @@
 			{
 				if (l[0].Password == _Password)
 				{
-					NavManager.NavigateTo("/home");
+					Entra(true);
 				}
 				else
 				{
@@ -205,6 +206,11 @@
 		}
 	}
 
+	public async Task Entra(bool a)
+	{
+		NavManager.NavigateTo("/home");
+		await sessionStorage.SetItemAsync("ID",a?_Mail:_MailReg);
+	}
 	//-------------------------------------------------------------------
 
 	public string NameReg { get; set; } = "";
@@ -237,7 +243,7 @@
 			{
 				Utente utente = new Utente { Mail = _MailReg, Nome = NameReg, Cognome = SurnameReg, Username = _UsernameReg, Password = _PasswordReg };
 				HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Utente", utente);
-				NavManager.NavigateTo("/home");
+				Entra(false);
 			}
 
 		}

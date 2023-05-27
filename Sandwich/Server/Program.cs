@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
-
+using Blazored.SessionStorage;
 namespace Sandwich
 {
     public class Program
@@ -12,8 +12,9 @@ namespace Sandwich
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+			builder.Services.AddBlazoredSessionStorage();
+			var app = builder.Build();
 
-            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
