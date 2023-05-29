@@ -209,7 +209,7 @@
 	public async Task Entra(bool a)
 	{
 		NavManager.NavigateTo("/home");
-		await sessionStorage.SetItemAsync("ID",a?_Mail:_MailReg);
+		await sessionStorage.SetItemAsync("MailLogged",a?_Mail:_MailReg);
 	}
 	//-------------------------------------------------------------------
 

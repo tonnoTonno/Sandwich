@@ -17,10 +17,11 @@ namespace Sandwich.Shared
 
     public class Test
     {
-        public int? Id_test { get; set; }
+        public int? IdTest { get; set; }
         public string? creatore { get; set; }
         public bool? Aperto { get; set; }
         public int? Durata { get; set; }
+        public string? Nome { get; set; }
     }
 
     public class Tentativo
@@ -35,7 +36,7 @@ namespace Sandwich.Shared
 
     public class Opzione
     {
-        public int? Id { get; set; }
+        public int? ProgressivoOpzione { get; set; }
         public string? Testo { get; set; }
         public bool? OpzioneCorretta { get; set; }
         public int? ProgDomanda { get; set; }
@@ -46,7 +47,6 @@ namespace Sandwich.Shared
     {
         public int? Progressivo { get; set; }
         public string? Consegna { get; set; }
-        public float? Punteggio { get; set; }
         public int? IdTest { get; set; }
 
         public List<Opzione> Opzioni { get; set; } = new() { new() };

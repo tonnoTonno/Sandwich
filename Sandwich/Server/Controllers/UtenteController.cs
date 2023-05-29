@@ -21,7 +21,7 @@ namespace Sandwich.Server.Controllers
         {
             if (ModelState.IsValid == true)
             {
-                db.Add(obj);
+                db.AddUtente(obj);
             }
             else{}
         }
