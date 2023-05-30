@@ -126,7 +126,7 @@
         <form class="quiz-form">
             <div class="quiz-form__quiz">
                 <p class="quiz-form__question">
-                    <div @onclick="(()=>RemoveQuest(Domanda))">
+                    <div @onclick="(()=>RemoveQuest(Domanda))" style="visibility:@RemoveVisibility">
                         <Remove></Remove>
                     </div>
                     <InputQuestion_ Domanda="@Domanda"></InputQuestion_>
@@ -139,7 +139,7 @@
                         <input type="radio" name="Opzione" @bind-value="@o.OpzioneCorretta" />
                         <InputAnswer Opzione="@o"></InputAnswer>
                         <b></b>
-                        <div style=" display: flex;justify-content: center;" @onclick="(() => Remove(o))">
+                        <div style=" display: flex;justify-content: center; visibility: @TakeVisibility()" @onclick="(() => Remove(o))">
                             <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
                         </div>
                     </label>
@@ -160,9 +160,16 @@
 
     [Parameter]
     public Domanda Domanda { get; set; } = new();
+    [Parameter]
+    public string RemoveVisibility { get; set; }="visible";
 
     [Parameter]
     public EventCallback<Domanda> RemoveDomanda { get; set; }
+
+    public string TakeVisibility()
+    {
+        return (Opzioni.Count == 1) ? "hidden" : "visible";
+    }
 
     public async void AddCount()
     {

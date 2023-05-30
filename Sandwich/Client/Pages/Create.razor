@@ -66,7 +66,7 @@
         <div style="justify-content: center;">
             @foreach (Domanda d in Domande)
             {
-                <FormQuestion Opzioni=@d.Opzioni Domanda=@d RemoveDomanda="RemoveDomanda"></FormQuestion>
+                <FormQuestion Opzioni=@d.Opzioni Domanda=@d RemoveDomanda="RemoveDomanda" RemoveVisibility="@TakeVisibility()"></FormQuestion>
             }
             <div style="display:flex;justify-content: center;" @onclick="AddQuestion">
                 <Plus_Minus btp="add-icon" text="Add an question"></Plus_Minus>
@@ -82,7 +82,13 @@
 @code {
     List<Domanda> Domande = new List<Domanda> { new Domanda() };
     public string QuizName;
-    public int TestId=1;
+    public int TestId;
+    public List<Test>? ListaTest = new();
+
+    public string TakeVisibility()
+    {
+        return (Domande.Count == 1) ? "hidden" : "visible";
+    }
 
     public void AddQuestion()
     {
@@ -92,20 +98,26 @@
     {
         string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
         TakeIdQuiz();
-        Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore= MailCreatore };
-        HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
-        Console.Write(Quizzettone.Aperto + "----" + Quizzettone.IdTest + "----" + Quizzettone.Nome + "----" + Quizzettone.creatore + "----" );
+        //Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore= MailCreatore };
+        //Console.Write(Quizzettone.Aperto + "----" + Quizzettone.IdTest + "----" + Quizzettone.Nome + "----" + Quizzettone.creatore);
+        //HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
+
         //inserimento quiz
     }
 
-    public async Task TakeIdQuiz()
+    protected override async Task OnInitializedAsync()
     {
-        List<Test> ListaTest = await Http.GetFromJsonAsync<List<Test>>("/api/Test");
-        if (ListaTest.Count != 0)
+        ListaTest = await Http.GetFromJsonAsync<List<Test>>("/api/Test");
+    }
+
+    public void TakeIdQuiz()
+    {
+        if (ListaTest?.Count != 0)
         {
-            ListaTest.OrderByDescending(x => x.IdTest).ToList();
-            TestId = Convert.ToInt32(ListaTest[0].IdTest);
-        }
+            ListaTest?.OrderByDescending(x => x.IdTest).ToList();
+            TestId = Convert.ToInt32(ListaTest?[0].IdTest);
+        }else
+        { TestId = 1; }
 
     }
 
