@@ -13,6 +13,7 @@ namespace Sandwich.Shared
         public string? Mail { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
+        public bool IsExpanded { get; set; }
     }
 
     public class Test
