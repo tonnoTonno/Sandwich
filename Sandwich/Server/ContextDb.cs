@@ -119,8 +119,9 @@ namespace Sandwich.Server
                             ProgressivoOpzione = Convert.ToInt32(dr[0]),
                             Testo = Convert.ToString(dr[1]),
                             OpzioneCorretta = Convert.ToBoolean(dr[2]),
-                            ProgDomanda = Convert.ToInt32(dr[3])
-                        });
+                            ProgDomanda = Convert.ToInt32(dr[3]),
+                            IdTest = Convert.ToInt32(dr[4])
+                        }) ;
 
                     }
                 }
@@ -212,7 +213,7 @@ namespace Sandwich.Server
 
         public bool AddAnswer(Opzione obj)
         {
-            string query = "insert into Opzioni values(@ProgressivoOpzione,@Testo,@OpzioneCorretta,@ProgDomanda)";
+            string query = "insert into Opzioni values(@ProgressivoOpzione,@Testo,@OpzioneCorretta,@ProgDomanda,@IdTest)";
             using (MySqlConnection con = new MySqlConnection(conn))
             {
                 using (MySqlCommand cmd = new MySqlCommand(query))
@@ -220,10 +221,11 @@ namespace Sandwich.Server
                     cmd.Connection = con;
                     if (con.State == ConnectionState.Closed)
                         con.Open();
-                    cmd.Parameters.AddWithValue("@Progressivo", obj.ProgressivoOpzione);
-                    cmd.Parameters.AddWithValue("@Consegna", obj.Testo);
-                    cmd.Parameters.AddWithValue("@IdTest", obj.OpzioneCorretta);
-                    cmd.Parameters.AddWithValue("@IdTest", obj.ProgDomanda);
+                    cmd.Parameters.AddWithValue("@ProgressivoOpzione", obj.ProgressivoOpzione);
+                    cmd.Parameters.AddWithValue("@Testo", obj.Testo);
+                    cmd.Parameters.AddWithValue("@OpzioneCorretta", obj.OpzioneCorretta);
+                    cmd.Parameters.AddWithValue("@ProgDomanda", obj.ProgDomanda);
+                    cmd.Parameters.AddWithValue("@IdTest", obj.IdTest);
                     int i = cmd.ExecuteNonQuery();
                     if (i >= 1)
                     {

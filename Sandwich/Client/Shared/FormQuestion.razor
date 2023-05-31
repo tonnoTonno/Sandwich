@@ -136,7 +136,6 @@
                 {
                     <label class="quiz-form__ans" style="width:100%">
                         <span></span>
-                        <input type="radio" name="Opzione" @bind-value="@o.OpzioneCorretta" />
                         <InputAnswer Opzione="@o"></InputAnswer>
                         <b></b>
                         <div style=" display: flex;justify-content: center; visibility: @TakeVisibility()" @onclick="(() => Remove(o))">
@@ -156,7 +155,7 @@
 
 @code {
     [Parameter]
-    public List<Opzione> Opzioni { get; set; } = new List<Opzione>() { new Opzione() };
+    public List<Opzione> Opzioni { get; set; } = new List<Opzione>() { };
 
     [Parameter]
     public Domanda Domanda { get; set; } = new();
@@ -173,7 +172,7 @@
 
     public async void AddCount()
     {
-        var opt = new Opzione();
+        var opt = new Opzione() { OpzioneCorretta = false };
         Opzioni.Add(opt);
     }
 
@@ -184,5 +183,9 @@
     public async void RemoveQuest(Domanda a)
     {
         await RemoveDomanda.InvokeAsync(a);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        AddCount();
     }
 }

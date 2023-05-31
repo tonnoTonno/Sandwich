@@ -61,13 +61,20 @@
         box-shadow: none;
     }
 </style>
+<input type="radio" name="Opzione" required="" @onclick="@ChangeRadio" />
 <div class="form__group field">
+    
     <input type="input" class="form__field" placeholder="Answer" required="" @bind-value=Opzione.Testo >
     <label for="Answer.ToLower()" class="form__label">Answer</label>
 </div>
 @code{
 
     [Parameter]
-    public Opzione Opzione { get; set; } = new();
-     
+    public Opzione Opzione { get; set; } = new(){OpzioneCorretta=false};
+
+
+    public void ChangeRadio()
+    {
+        Opzione.OpzioneCorretta = !Opzione.OpzioneCorretta;
+    }
 }

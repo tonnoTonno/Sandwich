@@ -4,7 +4,7 @@ using System.Web.Http.ModelBinding;
 
 namespace Sandwich.Server.Controllers
 {
-    [Route("/api/[controller]")]
+    [Route("/api/Answer")]
     [ApiController]
     public class AnswersController : ControllerBase
     {
