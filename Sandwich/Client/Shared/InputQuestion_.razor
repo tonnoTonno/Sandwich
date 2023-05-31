@@ -62,11 +62,12 @@
     }
 </style>
 <div class="form__group field">
-    <input type="input" class="form__field" placeholder="Question" required="" @bind-value=Domanda.Consegna >
-    <label for="Question.ToLower()" class="form__label">Question</label>
+    <input type="input" class="form__field" placeholder="@Sopra" required="" @bind-value=Domanda.Consegna>
+    <label for="@Sopra.ToLower()" class="form__label">@Sopra</label>
 </div>
 @code {
-
+    [Parameter, EditorRequired]
+    public string? Sopra { get; set; }
     [Parameter]
     public Domanda Domanda { get; set; } = new();
 

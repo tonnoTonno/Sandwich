@@ -1,4 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Crypto;
+using Sandwich.Client.Pages;
 using Sandwich.Shared;
 using System.Data;
 
@@ -172,7 +174,7 @@ namespace Sandwich.Server
                     cmd.Parameters.AddWithValue("@Aperto", obj.Aperto);
                     cmd.Parameters.AddWithValue("@Durata", obj.Durata);
                     cmd.Parameters.AddWithValue("@Nome", obj.Nome);
-                    int i = cmd.ExecuteNonQuery();
+                      int i = cmd.ExecuteNonQuery();
                     if (i >= 1)
                     {
                         return true;
@@ -226,6 +228,35 @@ namespace Sandwich.Server
                     cmd.Parameters.AddWithValue("@OpzioneCorretta", obj.OpzioneCorretta);
                     cmd.Parameters.AddWithValue("@ProgDomanda", obj.ProgDomanda);
                     cmd.Parameters.AddWithValue("@IdTest", obj.IdTest);
+                    int i = cmd.ExecuteNonQuery();
+                    if (i >= 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public bool EditTest(int id, Test obj)
+        {
+            string query = "update Tests set IdTest= @IdTest, creatore=@creatore, Aperto=@aperto, Durata=@durata, Name=@name where Id=@id", @creatore,@Aperto,@Durata,@Nome;
+            using (MySqlConnection con = new MySqlConnection(conn))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    if (con.State == ConnectionState.Closed)
+                        con.Open();
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@name", obj.Nome);
+                    cmd.Parameters.AddWithValue("@IdTest", obj.IdTest);
+                    cmd.Parameters.AddWithValue("@creatore", obj.creatore);
+                    cmd.Parameters.AddWithValue("@aperto", obj.Aperto );
+                    cmd.Parameters.AddWithValue("@durata", obj.Durata ); /*is null ? DBNull.Value : obj.Note)*/
                     int i = cmd.ExecuteNonQuery();
                     if (i >= 1)
                     {

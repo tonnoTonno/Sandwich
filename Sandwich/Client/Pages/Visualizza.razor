@@ -1,6 +1,7 @@
 ﻿@page "/view"
 @using System.Collections.Generic
 @inject HttpClient Http
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <style>
     .styled-table {
@@ -49,13 +50,20 @@
 </style>
 
 <Bolle left_="50%"></Bolle>
-
+<div>
+    <LittleMenu></LittleMenu>
+</div>
 <table class="styled-table">
+    
     <thead>
         <tr>
             <th>Id</th>
             <th>Nome</th>
             <th>Creatore</th>
+            <th>Stato</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -65,25 +73,23 @@
                 <td>@test.IdTest</td>
                 <td>@test.Nome</td>
                 <td>@test.creatore</td>
+                <td>@TraduciAperto(test.Aperto)</td>
+                <td></td>
+                @if (TraduciAperto(test.Aperto) == "Chiuso")
+                {
+                    <td><DurataInput InputText="@test.Durata"></DurataInput> </td>
+                    <td><GenericButton Contenuto="Apri"></GenericButton></td>
+                }
             </tr>
-            @if (test.IsExpanded)
-            {
-                <tr class="clickable">
-                    <td colspan="1"></td>
-                    <td colspan="1">
-                        <DurataInput ></DurataInput>
-                    </td>
-                    <td colspan="1">
-                        <GenericButton Contenuto="Apri"></GenericButton>
-                    </td>
-                </tr>
-            }
         }
     </tbody>
 </table>
 
 @code {
-
+    private string TraduciAperto(bool? b)
+    {
+        return (bool)b ? "Aperto" : "Chiuso";
+    }
 
     private void ToggleExpansion(Test test)
     {
@@ -100,7 +106,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string apiurl = "/api/Test";
+        string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
+        string apiurl = $"/api/Test/GetByCreator?c={MailCreatore}";
         ListaTest = await Http.GetFromJsonAsync<List<Test>>(apiurl);
         ListaTest.ForEach(x => x.IsExpanded = false);
     }

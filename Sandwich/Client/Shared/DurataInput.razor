@@ -1,10 +1,4 @@
 ﻿<style>
-	._label {
-  display: block;
-  color: black;
-  font-size: 14px;
-  padding: 5px 5px;
-}
 
 	#_Field {
   width: 100px;
@@ -28,8 +22,10 @@
 
 
 </style>
-<label for="_Field" class="_label label">Durata</label>
-<input type="text" value="@InputText" id="_Field">
+<label style="color:black;font-size:14px;" class="label">Durata:</label>
+<input type="number " min="0" @bind-value="@InputText" id="_Field">
 @code {
-	public string? InputText { get; set; }
+	[Parameter]
+	public int? InputText { get; set; }
+
 }

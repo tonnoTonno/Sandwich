@@ -129,23 +129,23 @@
                     <div @onclick="(()=>RemoveQuest(Domanda))" style="visibility:@RemoveVisibility">
                         <Remove></Remove>
                     </div>
-                    <InputQuestion_ Domanda="@Domanda"></InputQuestion_>
+                    <InputQuestion_ Domanda="@Domanda" Sopra="@over"></InputQuestion_>
                 </p>
 
                 @foreach (Opzione o in Opzioni)
                 {
                     <label class="quiz-form__ans" style="width:100%">
                         <span></span>
-                        <InputAnswer Opzione="@o"></InputAnswer>
+                        <InputAnswer Opzione="@o" Sopra="@TakeOver(o,Opzioni)"></InputAnswer>
                         <b></b>
                         <div style=" display: flex;justify-content: center; visibility: @TakeVisibility()" @onclick="(() => Remove(o))">
-                            <Plus_Minus btp="subtract-icon" text="Remove answer"></Plus_Minus>
+                            <Plus_Minus btp="subtract-icon" text="Rimuovi Risposta"></Plus_Minus>
                         </div>
                     </label>
                 }
 
                 <div style="display: flex;justify-content: center;" @onclick="AddCount">
-                    <Plus_Minus btp="add-icon" text="Add an answer"></Plus_Minus>
+                    <Plus_Minus btp="add-icon" text="Aggiungi Risposta"></Plus_Minus>
                 </div>
 
             </div>
@@ -154,6 +154,9 @@
 </div>
 
 @code {
+    [Parameter,EditorRequired]
+    public string? over{ get; set; }
+
     [Parameter]
     public List<Opzione> Opzioni { get; set; } = new List<Opzione>() { };
 
@@ -164,6 +167,11 @@
 
     [Parameter]
     public EventCallback<Domanda> RemoveDomanda { get; set; }
+
+    public string TakeOver(Opzione o,List<Opzione> l)
+    {
+        return "Risposta " + ((l.IndexOf(o) + 1).ToString());
+    }
 
     public string TakeVisibility()
     {

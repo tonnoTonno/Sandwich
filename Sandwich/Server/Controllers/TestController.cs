@@ -33,5 +33,21 @@ namespace Sandwich.Server.Controllers
             return result;
         }
 
+        [HttpGet(nameof(GetByCreator))]
+        public IEnumerable<Test> GetByCreator(string c)
+        {
+            var result = db.GetTest().Where(model => model.creatore == c);
+            return result;
+        }
+
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] Test obj)
+        {
+            if (ModelState.IsValid == true)
+            {
+                db.EditTest(id, obj);
+            }
+        }
+
     }
 }
