@@ -1,94 +1,109 @@
 ﻿@page "/view"
+@using System.Collections.Generic
 @inject HttpClient Http
 
 <style>
-    /* Styles for the table */
-    table {
-        margin: 50px auto;
+    .styled-table {
         width: 50%;
         border-collapse: collapse;
+        margin: 50px auto;
     }
 
-    /* Table header */
-    thead {
-        background-color: #333;
-        color: #fff;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    /* Alternating row colors */
-    tbody tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    /* Hidden row content */
-    tbody tr input[type="checkbox"] {
-        display: none;
-    }
-
-        tbody tr input[type="checkbox"]:checked ~ .expanded-content {
-            display: table-row;
+        .styled-table th,
+        .styled-table td {
+            padding: 10px;
         }
 
-    /* Clickable row */
-    tbody tr.clickable {
-        cursor: pointer;
-    }
+        .styled-table thead {
+            background-color: #240046;
+            color: #fff;
+        }
 
-    /* Expanded row content */
-    tbody tr .expanded-content {
-        display: none;
-        background-color: #ddd;
-        font-weight: bold;
-    }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #E6E6E6;
+        }
+
+        .styled-table tbody tr:nth-child(odd) {
+            background-color: #EEEEEE;
+        }
+
+        .styled-table .clickable {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .styled-table .clickable:hover {
+                background-color: #EBEBE3;
+            }
+
+        .styled-table .expanded-row {
+            display: none;
+            margin-bottom: 10px;
+            padding:20px;
+            color: #666;
+            transition: all .8s ease-in-out;
+        }
+
+
+    
 </style>
 
-<h3>VisualizzaUtenti</h3>
-<table class="table table-hover">
+<Bolle left_="50%"></Bolle>
+
+<table class="styled-table">
     <thead>
         <tr>
+            <th>Id</th>
             <th>Nome</th>
-            <th>Cognome</th>
-            <th>Username</th>
-            <th>Mail</th>
-            <th>Password</th>
+            <th>Creatore</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var utente in ListaUtenti)
+        @foreach (var test in ListaTest)
         {
-            <tr class="clickable">
-                <td>@utente.Nome</td>
-                <td>@utente.Cognome</td>
-                <td>@utente.Username</td>
-                <td>@utente.Mail</td>
-                <td>@utente.Password</td>
+            <tr class="clickable" @onclick="@(() => ToggleExpansion(test))">
+                <td>@test.IdTest</td>
+                <td>@test.Nome</td>
+                <td>@test.creatore</td>
             </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="checkbox" id="expand-trigger-1">
-                    <div class="expanded-content">
-                        <h3>Sottotitolo</h3>
-                        <p>Contenuto della riga espansa...</p>
-                    </div>
-                </td>
-            </tr>
+            @if (test.IsExpanded)
+            {
+                <tr class="clickable">
+                    <td colspan="1"></td>
+                    <td colspan="1">
+                        <DurataInput ></DurataInput>
+                    </td>
+                    <td colspan="1">
+                        <GenericButton Contenuto="Apri"></GenericButton>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
 
-
 @code {
-    List<Utente> ListaUtenti { get; set; } = new List<Utente>();
+
+
+    private void ToggleExpansion(Test test)
+    {
+
+        foreach (Test t in ListaTest)
+        {
+            if(t!=test)
+                t.IsExpanded = false;
+        }
+        test.IsExpanded = !test.IsExpanded;
+    }
+
+    List<Test> ListaTest { get; set; } = new List<Test>();
 
     protected override async Task OnInitializedAsync()
     {
-        string apiurl = "/api/Utente";
-        ListaUtenti = await Http.GetFromJsonAsync<List<Utente>>(apiurl);
+        string apiurl = "/api/Test";
+        ListaTest = await Http.GetFromJsonAsync<List<Test>>(apiurl);
+        ListaTest.ForEach(x => x.IsExpanded = false);
     }
-
 }
+
+

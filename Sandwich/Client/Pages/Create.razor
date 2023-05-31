@@ -1,5 +1,6 @@
 ﻿@page "/create"
 @inject HttpClient Http
+@inject NavigationManager NavManager;
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 <style>
 
@@ -82,7 +83,7 @@
 @code {
     List<Domanda> Domande = new List<Domanda> { new Domanda() };
     public string QuizName;
-    public int TestId;
+    public int TestId=0;
     public List<Test>? ListaTest = new();
 
     public string TakeVisibility()
@@ -98,10 +99,10 @@
     {
         string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
         TakeIdQuiz();
-        //Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore= MailCreatore };
+        Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore= MailCreatore,Durata=0};
         //Console.Write(Quizzettone.Aperto + "----" + Quizzettone.IdTest + "----" + Quizzettone.Nome + "----" + Quizzettone.creatore);
-        //HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
-
+        HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
+        NavManager.NavigateTo("/home");
         //inserimento quiz
     }
 
@@ -114,8 +115,18 @@
     {
         if (ListaTest?.Count != 0)
         {
-            ListaTest?.OrderByDescending(x => x.IdTest).ToList();
-            TestId = Convert.ToInt32(ListaTest?[0].IdTest);
+            ListaTest?.OrderBy(x => x.IdTest).ToList();
+            foreach (Test t in ListaTest)
+            {
+                if (t.IdTest != ListaTest.IndexOf(t)+1)
+                {
+                    TestId = ListaTest.IndexOf(t)+1;
+                }
+            }
+            if (TestId == 0)
+            {
+                TestId = ListaTest.Count()+1;
+            }
         }else
         { TestId = 1; }
 
