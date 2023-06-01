@@ -1,88 +1,99 @@
 ﻿
 <style>
-    .tabs {
-  display: flex;
-  position: relative;
-  background-color: #fff;
-  box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
-  padding: 0.75rem;
-  border-radius: 99px;
-		width: 140px;
-}
+	.radio-input input {
+		display: none;
+	}
 
-.tabs * {
-  z-index: 2;
-			width: 160px;
-}
+	.radio-input {
+		border: 2px solid rgb(0, 0, 0);
+		--container_width: 300px;
+		position: relative;
+		display: flex;
+		align-items: center;
+		border-radius: 50px;
+		background-color: #fff;
+		color: #000000;
+		width: var(--container_width);
+		overflow: hidden;
+		margin: 50px auto;
+	}
 
-.container input[type="radio"] {
-  display: none;
-	justify-content: center;
-	align-self: center;
-	position:absolute;
-	width:140px;
-}
+		.radio-input label {
+			width: 100%;
+			padding: 10px;
+			cursor: pointer;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 1;
+			font-weight: 600;
+			letter-spacing: -1px;
+			font-size: 14px;
+		}
 
-.tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
-  width: 50px;
-  font-size: .8rem;
-  color: black;
-  font-weight: 500;
-  border-radius: 99px;
-  cursor: pointer;
-  transition: color 0.15s ease-in;
-}
+	.selection {
+		display: none;
+		position: absolute;
+		height: 100%;
+		width: calc(var(--container_width) / 3);
+		z-index: 0;
+		left: 0;
+		top: 0;
+		transition: .15s ease;
+	}
 
+	.radio-input label:has(input:checked) {
+		color: #fff;
+		
+	}
 
-.container input[type="radio"]:checked + label {
-  color: #185ee0;
-}
+		.radio-input label:has(input:checked) ~ .selection {
+			background-color: #240046;
+			display: inline-block;
+		}
 
-.container input[id="radio-1"]:checked ~ .glider {
-  transform: translateX(7px);
-		width: 40px;
-}
+	.radio-input label:nth-child(1):has(input:checked) ~ .selection {
+		transform: translateX(calc(var(--container_width) * 0/3));
+	}
 
-.container input[id="radio-2"]:checked ~ .glider {
-  transform: translateX(75%);
-  width:60px;
-}
+	.radio-input label:nth-child(2):has(input:checked) ~ .selection {
+		transform: translateX(calc(var(--container_width) * 1/3));
+	}
 
-
-.glider {
-  position: absolute;
-  display: flex;
-  height: 30px;
-  width: 50px;
-  background-color: #e6eef9;
-  z-index: 1;
-  border-radius: 99px;
-  transition: 0.25s ease-out;
-}
-
-@@media (max-width: 700px) {
- 
-  .tabs {
-    transform: scale(0.6);
-			width: 140px;
-  }
-}
-
+	.radio-input label:nth-child(3):has(input:checked) ~ .selection {
+		transform: translateX(calc(var(--container_width) * 2/3));
+	}
 </style>
 
-<div class="container">
-	<div class="tabs">
-		<input type="radio" id="radio-1" name="tabs" checked="">
-		<label class="tab" for="radio-1">Test</label>
-		<input type="radio" id="radio-2" name="tabs">
-		<label class="tab" for="radio-2">Tentativi</label>
-		<span class="glider"></span>
-	</div>
+<div class="radio-input">
+	<label>
+		<input type="radio" id="value-1" name="value-radio" value="value-1" checked="()=>@IsChecked("value-1"),checked" @onclick="()=>_OnChange(value[0])">
+		<span>Test</span>
+	</label>
+	<label>
+		<input type="radio" id="value-2" name="value-radio" value="value-2" checked="@IsChecked("value-2")" @onclick="()=>_OnChange(value[1])">
+		<span>Esplora</span>
+	</label>
+	<label>
+		<input type="radio" id="value-3" name="value-radio" value="value-3" checked="@IsChecked("value-3")" @onclick="()=>_OnChange(value[2])">
+		<span>Tentativi</span>
+	</label>
+	<span class="selection"></span>
 </div>
+
 @code {
+	public string? SelectedValue { get; set; }
+	public string[] value = { "1", "2", "3" };
+
+	private void _OnChange(string value)
+	{
+		SelectedValue = value;
+		StateHasChanged();
+	}
+
+	private bool IsChecked(string value)
+	{
+		return SelectedValue == value;
+	}
 
 }

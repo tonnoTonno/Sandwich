@@ -1,17 +1,26 @@
 ﻿@page "/home"
 @inject NavigationManager NavManager;
+
+<style>
+    .container {
+        width: 1000px;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
 <Bolle left_="50%"></Bolle>
 <body style="background-color:transparent">
 
     <div class="container">
         <div @onclick="View" class="col-lg">
-            <Choose Title="View" Description="View all quizzes" idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="#5f51fe" Colore2="#21A5FF"></Choose>
+            <Choose Title="Guarda" Description="View all quizzes" ></Choose>
         </div>
         <div @onclick="Create" class="col-lg">
-            <Choose Title="Create" Description="Create a new quiz" idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="" Colore2="#21A5FF"></Choose>
+            <Choose Title="Crea" Description="View all quizzes"></Choose>
         </div>
         <div @onclick="Join" class="col-lg">
-            <Choose Title="Join" Description="Join " idImage="https://drive.google.com/uc?export=view&id=1yItrybfVrEz9egDura6qQ3xgCgjD94bb" Colore1="" Colore2="#21A5FF"></Choose>
+            <Choose Title="Testa" Description="View all quizzes" ></Choose>
         </div>
     </div>
 </body>

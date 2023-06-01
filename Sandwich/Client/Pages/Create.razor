@@ -105,19 +105,19 @@
         string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
         TakeIdQuiz();
         Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore= MailCreatore,Durata=0};
-        //HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
+        HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
 
         foreach(Domanda a in Domande)
         {
             a.IdTest = TestId;
             a.Progressivo = Domande.IndexOf(a) + 1;
-            //response = await Http.PostAsJsonAsync("/api/Question", a);
+            response = await Http.PostAsJsonAsync("/api/Question", a);
             for(int i=0;i<a.Opzioni.Count;i++)
             {
                 a.Opzioni[i].ProgressivoOpzione = i + 1;
                 a.Opzioni[i].IdTest = TestId;
                 a.Opzioni[i].ProgDomanda = a.Progressivo;
-                //response = await Http.PostAsJsonAsync("/api/Answer", a.Opzioni[i]);
+                response = await Http.PostAsJsonAsync("/api/Answer", a.Opzioni[i]);
             }
         }
         NavManager.NavigateTo("/home");
