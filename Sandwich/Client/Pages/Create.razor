@@ -75,16 +75,24 @@
             <div>
                 <button class="submit" type="submit" @onclick="AddQuiz">Conferma</button>
             </div>
+            <div style="color:white;visibility:@visErr;margin-left:40px">
+                <div><strong>Errore, inserire tutte le variabili:</strong></div>
+                <div><strong>1-il titolo in alto al documento</strong></div>
+                <div><strong>2-testo di domande e opzioni</strong></div>
+                <div><strong>3-risposta giusta(da segnalare tramite il pallino a sinistra del testo dell'opzione)</strong></div>
+            </div>
         </div>
     </div>
 </body>
 
 
 @code {
+    public string visErr="hidden";
     List<Domanda> Domande = new List<Domanda> { new Domanda() };
     public string? QuizName;
     public int TestId=0;
     public List<Test>? ListaTest = new();
+    public string MyQueryString { get; set; }
 
     public string TakeOver(Domanda o, List<Domanda> l)
     {
@@ -100,27 +108,59 @@
     {
         Domande.Add(new Domanda());
     }
-    public async Task AddQuiz()
-    {
-        string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
-        TakeIdQuiz();
-        Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore= MailCreatore,Durata=0};
-        HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
 
+    public bool Controllo()
+    {
+        bool ok;
+        if (QuizName == "" || QuizName == null)
+            return false;
         foreach(Domanda a in Domande)
         {
-            a.IdTest = TestId;
-            a.Progressivo = Domande.IndexOf(a) + 1;
-            response = await Http.PostAsJsonAsync("/api/Question", a);
-            for(int i=0;i<a.Opzioni.Count;i++)
+            if (a.Consegna == "" || a.Consegna==null)
+                return false;
+            ok = false;
+            foreach(Opzione b in a.Opzioni)
             {
-                a.Opzioni[i].ProgressivoOpzione = i + 1;
-                a.Opzioni[i].IdTest = TestId;
-                a.Opzioni[i].ProgDomanda = a.Progressivo;
-                response = await Http.PostAsJsonAsync("/api/Answer", a.Opzioni[i]);
+                if (b.OpzioneCorretta == true)
+                    ok = true;
+                if (b.Testo == "" || b.Testo==null)
+                    return false;
             }
+            if (ok == false)
+                return false;
         }
-        NavManager.NavigateTo("/home");
+        return true;
+    }
+    public async Task AddQuiz()
+    {
+        if(Controllo())
+        {
+                string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
+                TakeIdQuiz();
+                Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore = MailCreatore, Durata = 0 };
+                HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
+                Console.Write(response);
+
+                foreach (Domanda a in Domande)
+                {
+                    a.IdTest = TestId;
+                    a.Progressivo = Domande.IndexOf(a) + 1;
+                    response = await Http.PostAsJsonAsync("/api/Question", a);
+                    for (int i = 0; i < a.Opzioni.Count; i++)
+                    {
+                        a.Opzioni[i].ProgressivoOpzione = i + 1;
+                        a.Opzioni[i].IdTest = TestId;
+                        a.Opzioni[i].ProgDomanda = a.Progressivo;
+                        response = await Http.PostAsJsonAsync("/api/Answer", a.Opzioni[i]);
+                    }
+                }
+                NavManager.NavigateTo("/home?alert=1");
+        }else
+        {
+            visErr = "visible";
+        }
+
+
 
     }
 

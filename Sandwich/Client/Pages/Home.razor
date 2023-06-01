@@ -1,5 +1,6 @@
 ﻿@page "/home"
 @inject NavigationManager NavManager;
+@using System.Web;
 
 <style>
     .container {
@@ -11,7 +12,7 @@
 </style>
 <Bolle left_="50%"></Bolle>
 <body style="background-color:transparent">
-
+    <div style="text-align:center;margin:0 auto; font-size:100px;color:white;font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">SandwichQuiz</div>
     <div class="container">
         <div @onclick="View" class="col-lg">
             <Choose Title="Guarda" Description="View all quizzes" ></Choose>
@@ -23,8 +24,23 @@
             <Choose Title="Testa" Description="View all quizzes" ></Choose>
         </div>
     </div>
+    @if (TakeAlert() == "1")
+    {
+        <div>
+            <Alert Close="()=>NavManager.NavigateTo(s)" Sub="Il tuo test è stato creato correttamente." Title="Bravo!"></Alert>
+        </div>
+    }
 </body>
 @code{
+    public string s = "/home?alert=0";
+    public string TakeAlert()
+    {
+        var uri = new Uri(NavManager.Uri);
+        var queryString = uri.Query;
+        var queryParams = HttpUtility.ParseQueryString(queryString);
+        return queryParams["alert"];
+    }
+
     public async Task View()
     {
         NavManager.NavigateTo("/view");

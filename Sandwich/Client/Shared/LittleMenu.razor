@@ -82,6 +82,8 @@
 </div>
 
 @code {
+	[Parameter,EditorRequired]
+	public Action e{ get; set; }
 	public string? SelectedValue { get; set; }
 	public string[] value = { "1", "2", "3" };
 
@@ -89,6 +91,7 @@
 	{
 		SelectedValue = value;
 		StateHasChanged();
+		e();
 	}
 
 	private bool IsChecked(string value)
