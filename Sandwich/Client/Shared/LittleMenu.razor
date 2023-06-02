@@ -83,15 +83,15 @@
 
 @code {
 	[Parameter,EditorRequired]
-	public Action e{ get; set; }
-	public string? SelectedValue { get; set; }
+	public EventCallback<string> StateChanged { get; set; }
+	public string? SelectedValue { get; set; } = "1";
 	public string[] value = { "1", "2", "3" };
 
-	private void _OnChange(string value)
+	private Task _OnChange(string value)
 	{
 		SelectedValue = value;
 		StateHasChanged();
-		e();
+		return StateChanged.InvokeAsync(SelectedValue);
 	}
 
 	private bool IsChecked(string value)

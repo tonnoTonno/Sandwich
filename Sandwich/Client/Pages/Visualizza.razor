@@ -2,6 +2,7 @@
 @using System.Collections.Generic
 @inject HttpClient Http
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager NavManager;
 
 <style>
     .styled-table {
@@ -13,6 +14,7 @@
         .styled-table th,
         .styled-table td {
             padding: 10px;
+            width:50px;
         }
 
         .styled-table thead {
@@ -49,65 +51,118 @@
     
 </style>
 
-<Bolle left_="50%"></Bolle>
-<LittleMenu></LittleMenu>
+<Bolle left_="50%" Back="home"></Bolle>
+<LittleMenu StateChanged="ChangeSelectedValue"></LittleMenu>
 <table class="styled-table">
-    
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Nome</th>
-            <th>Creatore</th>
-            <th>Stato</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            @if(SelectedValue!="3")
+            {
+                <th>Id</th>
+                <th>Nome</th>
+                @if (SelectedValue == "2")
+                {
+                    <th>creatore</th>
+                }
+                <th>Stato</th>
+                <th></th>
+                <th></th>
+            }else
+            {
+                
+            }
+            
         </tr>
     </thead>
     <tbody>
-        @foreach (var test in ListaTest)
+        @if(SelectedValue=="1")
         {
-            <tr class="clickable" @onclick="@(() => ToggleExpansion(test))">
-                <td>@test.IdTest</td>
-                <td>@test.Nome</td>
-                <td>@test.creatore</td>
-                <td>@TraduciAperto(test.Aperto)</td>
-                <td></td>
-                @if (TraduciAperto(test.Aperto) == "Chiuso")
-                {
-                    <td><DurataInput InputText="@test.Durata"></DurataInput> </td>
-                    <td><GenericButton Contenuto="Apri"></GenericButton></td>
-                }
-            </tr>
+            @foreach (var test in ListaTest)
+            {
+                <tr class="clickable">
+                    <td>@test.IdTest</td>
+                    <td>@test.Nome</td>
+                    <td>@TraduciAperto(test.Aperto)</td>
+                    <td></td>
+                    @if (TraduciAperto(test.Aperto) == "Chiuso")
+                    {
+                        <td><GenericButton Contenuto="Apri" OnClic="e=>ApriChiudiTest(test)" Color1="#3d3a4e" Color2="linear-gradient( 82.3deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3% )"></GenericButton></td>
+                    }
+                    else
+                    {
+                        <td><GenericButton Contenuto="Chiudi" OnClic="e=>ApriChiudiTest(test)" Color1="linear-gradient( 82.3deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3% )" Color2="#3d3a4e"></GenericButton></td>
+                    }
+                </tr>
+            }
         }
+        else if (SelectedValue == "2")
+        {
+            @foreach (var test in ListaEsplora)
+            {
+                <tr class="clickable">
+                    <td>@test.IdTest</td>
+                    <td>@test.Nome</td>
+                    <td>@test.creatore</td>
+                    <td>@TraduciAperto(test.Aperto)</td>
+                    <td></td>
+                    @if(test.Aperto==true)
+                    {
+                        <td><GenericButton Contenuto="Testa" OnClic="e=>Join(test.IdTest.ToString())" Color1="#3d3a4e" Color2="linear-gradient( 82.3deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3% )"></GenericButton></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    
+                </tr>
+            }
+        }
+
+
+
     </tbody>
 </table>
 
 @code {
+    public string SelectedValue="1";
+
+    public void Join(string id)
+    {
+        NavManager.NavigateTo($"/join?IdTest={id}", forceLoad: true);
+    }
+
+    public async Task ChangeSelectedValue(string s)
+    {
+        SelectedValue = s;
+        string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
+        ListaTest = await Http.GetFromJsonAsync<List<Test>>($"/api/Test/GetByCreator?c={MailCreatore}");
+        ListaEsplora = (await Http.GetFromJsonAsync<List<Test>>("/api/Test"));
+        //ListaTentativi = await Http.GetFromJsonAsync<List<Tentativo>>("/api/Tentativi");
+    }
+
     private string TraduciAperto(bool? b)
     {
         return (bool)b ? "Aperto" : "Chiuso";
     }
 
-    private void ToggleExpansion(Test test)
+    public async Task ApriChiudiTest(Test t)
     {
-
-        foreach (Test t in ListaTest)
-        {
-            if(t!=test)
-                t.IsExpanded = false;
-        }
-        test.IsExpanded = !test.IsExpanded;
+        Test a = t;
+        a.Aperto = !a.Aperto;
+        HttpResponseMessage response = await Http.PutAsJsonAsync($"/api/Test/{t.IdTest}", a);
     }
 
-    List<Test> ListaTest { get; set; } = new List<Test>();
+    public List<Test> ListaTest { get; set; } = new List<Test>();
+    public List<Test> ListaEsplora { get; set; } = new List<Test>();
+    public List<Tentativo> ListaTentativi { get; set; } = new List<Tentativo>();
 
     protected override async Task OnInitializedAsync()
     {
         string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
-        string apiurl = $"/api/Test/GetByCreator?c={MailCreatore}";
-        ListaTest = await Http.GetFromJsonAsync<List<Test>>(apiurl);
-        ListaTest.ForEach(x => x.IsExpanded = false);
+        ListaTest = await Http.GetFromJsonAsync<List<Test>>($"/api/Test/GetByCreator?c={MailCreatore}");
+        ListaEsplora = (await Http.GetFromJsonAsync<List<Test>>("/api/Test"));
+        //ListaTentativi = await Http.GetFromJsonAsync<List<Tentativo>>("/api/Tentativi");
+
     }
 }
 

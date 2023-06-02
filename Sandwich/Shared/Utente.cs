@@ -21,9 +21,7 @@ namespace Sandwich.Shared
         public int? IdTest { get; set; }
         public string? creatore { get; set; }
         public bool? Aperto { get; set; }
-        public int? Durata { get; set; }
         public string? Nome { get; set; }
-		public bool IsExpanded { get; set; }
 	}
 
     public class Tentativo
@@ -32,8 +30,9 @@ namespace Sandwich.Shared
         public string? utente { get; set; }
         public DateTime? dataOraInizio { get; set; }
         public DateTime? dataOraFine { get; set; }
-        public float? risulatato{ get; set; }
-        public int? codiceTest{ get; set; }
+        public int? risulatato{ get; set; }
+        public int? IdTest{ get; set; }
+        public List<RispostaTentativo> risposte { get; set; }
     }
 
     public class Opzione
@@ -52,7 +51,7 @@ namespace Sandwich.Shared
         public string? Consegna { get; set; }
         public int? IdTest { get; set; }
 
-        public List<Opzione> Opzioni { get; set; } = new() {};
+        public List<Opzione> Opzioni { get; set; }
 
     }
 
@@ -61,5 +60,12 @@ namespace Sandwich.Shared
         public string? CodificaImmagine { get; set; }
         public int? IdDomanda { get; set; }
 
+    }
+
+    public class RispostaTentativo
+    {
+        public Domanda Domanda { get; set; }
+        public Opzione RispostaData { get; set; }
+        public bool giusto { get; set; }
     }
 }

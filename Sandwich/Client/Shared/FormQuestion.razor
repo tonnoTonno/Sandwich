@@ -8,14 +8,14 @@
 
     ::selection {
         background: #fff;
-        color: #117eeb;
+        color: #240046;
     }
 
     body {
-        background: #252c4a;
+        background: #fff;
         font-family: "Montserrat", sans-serif;
         font-weight: 300;
-        color: #240046;
+        color: #fff;
         background: transparent;
     }
 
@@ -50,26 +50,28 @@
     .quiz-form__question {
         margin-bottom: 0.8rem;
         font-size: 1.2rem;
+        color:white;
     }
 
     .quiz-form__quiz:not(:last-child) {
         margin-bottom: 1.5rem;
         border-radius: 0.8rem;
-        border: 2px solid #240046;
+        border: 2px solid #fff;
         padding: 40px;
     }
 
     .quiz-form__ans {
         border-radius: 0.8rem;
-        border: 2px solid #240046;
+        border: 2px solid #fff;
         padding: 0.8rem;
-        color: #a1a9bd;
+        color: #240046;
         position: relative;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         flex-wrap: nowrap;
         cursor: pointer;
+        background:#fff;
     }
 
         .quiz-form__ans:not(:last-child) {
@@ -122,12 +124,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
 <div class="container">
     <!-- Quiz section -->
-    <div class="quiz" style="border:2px solid; border-radius:50px; padding:25px;background:#f3f3f3;  width:100%">
+    <div class="quiz" style="border:2px solid; border-radius:50px; padding:25px;background:#240046;  width:100%">
         <form class="quiz-form">
             <div class="quiz-form__quiz">
                 <p class="quiz-form__question">
-                    <div @onclick="(()=>RemoveQuest(Domanda))" style="visibility:@RemoveVisibility">
-                        <Remove></Remove>
+                    <div style="visibility:@RemoveVisibility;margin-bottom:15px">
+                        <Remove e="()=>RemoveQuest(Domanda)"></Remove>
                     </div>
                     <InputQuestion_ Domanda="@Domanda" Sopra="@over"></InputQuestion_>
                 </p>
@@ -138,8 +140,8 @@
                         <span></span>
                         <InputAnswer Opzione="@o" Sopra="@TakeOver(o,Opzioni)"></InputAnswer>
                         <b></b>
-                        <div style=" display: flex;justify-content: center; visibility: @TakeVisibility()" @onclick="(() => Remove(o))">
-                            <Plus_Minus btp="subtract-icon" text="Rimuovi Risposta"></Plus_Minus>
+                        <div style=" display: flex;justify-content: center; visibility: @TakeVisibility()" >
+                            <Plus_Minus btp="subtract-icon" text="Rimuovi Risposta" e="()=>Remove(o)"></Plus_Minus>
                         </div>
                     </label>
                 }
@@ -178,9 +180,9 @@
         return (Opzioni.Count == 1) ? "hidden" : "visible";
     }
 
-    public async void AddCount()
+    public void AddCount()
     {
-        var opt = new Opzione() { OpzioneCorretta = false };
+        var opt = new Opzione() {};
         Opzioni.Add(opt);
     }
 

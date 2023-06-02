@@ -2,7 +2,7 @@
     .icon-btn {
         width: 50px;
         height: 50px;
-        border: 1px solid #fff;
+        border: 1px solid #240046;
         background: #240046;
         border-radius: 25px;
         overflow: hidden;
@@ -95,11 +95,13 @@
         top: calc(50% - 2px);
     }
 </style>
-<button class="icon-btn add-btn" type="button">
+<button class="icon-btn add-btn" type="button" @onclick=e>
     <div class="@btp"></div>
     <div class="btn-txt" style="color:white">@text</div>
 </button>
 @code {
+    [Parameter]
+    public EventCallback e{ get; set; }
     [Parameter]
     public string? text { get; set; }
     [Parameter]

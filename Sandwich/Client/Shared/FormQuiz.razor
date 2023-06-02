@@ -51,6 +51,7 @@
         border: 1px solid rgba(187, 187, 187, 0.164);
         color: #000;
         transition: .3s ease;
+        display:flex;
     }
 
         .radio-input label:hover {
@@ -58,57 +59,36 @@
             border: 1px solid #bbb;
         }
 
-    .result {
-        margin-top: 10px;
-        font-weight: 600;
-        font-size: 12px;
-        display: none;
-        transition: display .4s ease;
-    }
-
-        .result.success {
-            color: green;
-        }
-
-        .result.error {
-            color: red;
-        }
 
     .radio-input input:checked + label {
-        border-color: red;
-        color: red;
-    }
-
-    .radio-input input[value="value-2"]:checked + label {
         border-color: rgb(22, 245, 22);
         color: rgb(16, 184, 16);
     }
 
-    .radio-input:has(input[value="value-2"]:checked) .result.success {
-        display: flex;
-    }
-
-    .radio-input:has(input:not([value="value-2"]):checked ) .result.error {
-        display: flex;
-    }
 </style>
 <div class="radio-input">
     <div class="info">
         <span class="question">@Question.Consegna</span>
         <span class="steps">@posizione</span>
     </div>
-    <input type="radio" id="value-1" name="value-radio" value="value-1">
-    <label for="value-1">Computer Style Sheets</label>
-    <input type="radio" id="value-2" name="value-radio" value="value-2">
-    <label for="value-2">Cascading Style Sheets</label>
-    <input type="radio" id="value-3" name="value-radio" value="value-3">
-    <label for="value-3">Creative Style Sheets</label>  
-    <span class="result success">Congratulations!</span>
-    <span class="result error">Bad answer</span>
+    @foreach(Opzione o in Question.Opzioni)
+    {
+        <input type="radio" id="@takeValue(o)" name="value-radio" value="@takeValue(o)">
+        <label for="@takeValue(o)">@o.Testo</label>
+    }
+    <a style="margin:0 0 auto;font-size:5px;">►</a>
 </div>
 @code {
     [Parameter]
     public Domanda Question{ get; set; }
     [Parameter]
     public string? posizione{ get; set; }
+
+    public string? Corretta;
+    public string takeValue(Opzione o)
+    {
+        if (o.OpzioneCorretta==true)
+            Corretta = $"value-{o.ProgressivoOpzione}";
+        return Corretta;
+    }
 }

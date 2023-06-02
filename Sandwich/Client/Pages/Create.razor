@@ -26,6 +26,11 @@
         font-weight: 300;
     }
 
+    .heading__focus {
+        border-bottom:2px solid;
+        border-bottom-color:black;
+    }
+
     .submit {
         border: none;
         border-radius: 100vh;
@@ -56,30 +61,43 @@
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
+    #back {
+        font-size: 60px;
+        background-color: transparent;
+        border: none;
+        color: white;
+        z-index:1000;
+        float:right
+    }
+
+        #back:hover {
+            color: black;
+        }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
-<Bolle left_="15%"></Bolle>
+<Bolle left_="50%" ></Bolle>
 <body style="overflow-y:scroll;position:fixed;height:100%;margin-top:-150px">
-    <div class="heading" style="margin-top:30px;display: flex;justify-content: center;">
+    <div class="heading" style="margin-top:30px;display: flex;justify-content: center;z-index:2;margin-left:auto">
+        <button id="back" @onclick="()=>VaiA(1)">ᐊ</button>
         <input class="heading__text" placeholder="Inserire Nome" style="border:hidden;background:transparent;" @bind-value="@QuizName" />
     </div>
     <div class="container" style="display: flex;justify-content: center;">
         <div style="justify-content: center;">
             @foreach (Domanda d in Domande)
             {
-                <FormQuestion Opzioni=@d.Opzioni Domanda=@d RemoveDomanda="RemoveDomanda" RemoveVisibility="@TakeVisibility()" over="@TakeOver(d,Domande)"></FormQuestion>
+                <FormQuestion Opzioni=@d.Opzioni Domanda=@d RemoveDomanda="@RemoveDomanda" RemoveVisibility="@TakeVisibility()" over="@TakeOver(d,Domande)"></FormQuestion>
             }
-            <div style="display:flex;justify-content: center;" @onclick="AddQuestion">
-                <Plus_Minus btp="add-icon" text="Aggiungi Domanda"></Plus_Minus>
+            <div style="display:flex;justify-content: center;" >
+                <Plus_Minus btp="add-icon" text="Aggiungi Domanda" e="AddQuestion"></Plus_Minus>
             </div>
             <div>
                 <button class="submit" type="submit" @onclick="AddQuiz">Conferma</button>
             </div>
             <div style="color:white;visibility:@visErr;margin-left:40px">
                 <div><strong>Errore, inserire tutte le variabili:</strong></div>
-                <div><strong>1-il titolo in alto al documento</strong></div>
-                <div><strong>2-testo di domande e opzioni</strong></div>
-                <div><strong>3-risposta giusta(da segnalare tramite il pallino a sinistra del testo dell'opzione)</strong></div>
+                <div><strong>        1-il titolo in alto al documento</strong></div>
+                <div><strong>        2-testo di domande e opzioni</strong></div>
+                <div><strong>        3-risposta giusta(da segnalare tramite il pallino a sinistra del testo dell'opzione)</strong></div>
             </div>
         </div>
     </div>
@@ -93,6 +111,11 @@
     public int TestId=0;
     public List<Test>? ListaTest = new();
     public string MyQueryString { get; set; }
+
+    public void VaiA(int s)
+    {
+        NavManager.NavigateTo(((s == 1) ? "/home" : "/"));
+    }
 
     public string TakeOver(Domanda o, List<Domanda> l)
     {
@@ -137,7 +160,7 @@
         {
                 string MailCreatore = await sessionStorage.GetItemAsync<string>("MailLogged");
                 TakeIdQuiz();
-                Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore = MailCreatore, Durata = 0 };
+                Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore = MailCreatore};
                 HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
                 Console.Write(response);
 
@@ -159,9 +182,6 @@
         {
             visErr = "visible";
         }
-
-
-
     }
 
     protected override async Task OnInitializedAsync()

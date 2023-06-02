@@ -10,37 +10,37 @@
         justify-content: space-between;
     }
 </style>
-<Bolle left_="50%"></Bolle>
+<Bolle left_="50%" Back="logout"></Bolle>
 <body style="background-color:transparent">
     <div style="text-align:center;margin:0 auto; font-size:100px;color:white;font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">SandwichQuiz</div>
     <div class="container">
-        <div @onclick="View" class="col-lg">
-            <Choose Title="Guarda" Description="View all quizzes" ></Choose>
+        <div  class="col-lg">
+            <Choose Title="Guarda" Description="Esplora i test " Clicked="View"></Choose>
         </div>
-        <div @onclick="Create" class="col-lg">
-            <Choose Title="Crea" Description="View all quizzes"></Choose>
+        <div  class="col-lg">
+            <Choose Title="Crea" Description="Crea un nuovo quiz" Clicked="Create"></Choose>
         </div>
-        <div @onclick="Join" class="col-lg">
-            <Choose Title="Testa" Description="View all quizzes" ></Choose>
+        <div  class="col-lg">
+            <Choose Title="Testa"  box=true Clicked="Join" ></Choose>
         </div>
     </div>
-    @if (TakeAlert() == "1")
+    @if (HttpUtility.ParseQueryString((new Uri(NavManager.Uri)).Query)["alert"] == "1")
     {
         <div>
-            <Alert Close="()=>NavManager.NavigateTo(s)" Sub="Il tuo test è stato creato correttamente." Title="Bravo!"></Alert>
+            <Alert Close="()=>Update()" Sub="Il tuo test è stato creato correttamente." Title="Bravo!"></Alert>
         </div>
     }
 </body>
 @code{
     public string s = "/home?alert=0";
-    public string TakeAlert()
+    public async Task Update()
     {
-        var uri = new Uri(NavManager.Uri);
-        var queryString = uri.Query;
-        var queryParams = HttpUtility.ParseQueryString(queryString);
-        return queryParams["alert"];
+        NavManager.NavigateTo(s,forceLoad:true);
+        StateHasChanged();
     }
+    
 
+    
     public async Task View()
     {
         NavManager.NavigateTo("/view");
@@ -51,8 +51,9 @@
         NavManager.NavigateTo("/create");
     }
 
-    public async Task Join()
+    public async Task Join(string s)
     {
-        NavManager.NavigateTo("/join");
+        if(s!=null || s=="")
+            NavManager.NavigateTo($"/join?IdTest={s}");
     }
 }

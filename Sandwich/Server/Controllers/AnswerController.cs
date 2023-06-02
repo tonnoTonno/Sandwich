@@ -26,10 +26,10 @@ namespace Sandwich.Server.Controllers
             else { }
         }
 
-        [HttpGet(nameof(GetByAnswer))]
-        public IEnumerable<Opzione> GetByAnswer(int id)
+        [HttpGet(nameof(GetAnsByTest))]
+        public IEnumerable<Opzione> GetAnsByTest(int id)
         {
-            var result = db.GetAnswer().Where(model => model.ProgDomanda == id);
+            var result = db.GetAnswer().Where(model => model.IdTest== id);
             return result;
         }
 

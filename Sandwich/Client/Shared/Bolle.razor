@@ -1,4 +1,5 @@
-﻿<style>		 
+﻿@inject NavigationManager NavManager;
+<style>		 
 html {
   height: 100%;
   background-color:#090a0f;
@@ -187,8 +188,40 @@ background:transparent;
   }
 }
 
+#home{
+    margin:5px;
+    font-size:80px;
+    background-color:transparent;
+    border:none;
+    color:white;
+}
+
+#home:hover{
+    color: black;
+}
+
+    #back {
+        margin: 5 5 5 auto;
+        font-size: 60px;
+        background-color: transparent;
+        border: none;
+        color: white;
+    }
+
+        #back:hover {
+            color: black;
+        }
+
 </style>
 <div>
+    @if (Back == "home")
+    {
+        <button id="back" @onclick="()=>VaiA(1)">ᐊ</button>
+    }else if(Back=="logout")
+    {
+        <button id="home" @onclick="()=>VaiA(2)">⌂</button>
+    }
+
 	<div class="lamp">
         @if(left_!="sium")
         {
@@ -223,4 +256,11 @@ background:transparent;
     [Parameter]
     public string? left_{ get; set; }
 
+    [Parameter]
+    public string? Back{ get; set; }
+
+    public void VaiA(int s)
+    {
+        NavManager.NavigateTo(((s==1)?"/home":"/"));
+    }
 }

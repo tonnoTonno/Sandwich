@@ -1,4 +1,81 @@
 ﻿@page "/join"
+@inject HttpClient Http
+@inject NavigationManager NavManager;
+@using System.Web;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
+
+<style>
+</style>
+
+<Bolle left_="50%" Back="home"></Bolle>
+<body style="position:fixed;height:100%;width: 100%;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        ">
+    <div style="justify-content: center;margin:-130px 0  auto">
+        <h1>@test?.Nome</h1>
+    @*@foreach (Domanda? d in Domande_)
+    {
+        <FormQuiz Question="d" posizione="@TakePosition(d)"></FormQuiz>
+    }*@
+    </div>
+</body>
+
+    
+
+    
+
+@code{
+    public string? s;
+    public Test? test=null;
+    public List<Test>? t;
+    List<Domanda>? Domande_;
+    List<Opzione>? Opzioni;
+
+    public string TakePosition(Domanda d)
+    {
+        return $"{Domande_?.IndexOf(d)+1}/{Domande_?.Count}";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavManager.Uri);
+        var queryString = uri.Query;
+        var queryParams = HttpUtility.ParseQueryString(queryString);
+        s = queryParams["IdTest"];
+        t = (await Http.GetFromJsonAsync<List<Test>>($"/api/Test"));
+        try
+        {
+            foreach (Test a in t)
+            {
+                if(a.IdTest.ToString()==s)
+                {
+                    test = a;
+                }
+            }
+            if(test!=null)
+            {
+                if (test?.Aperto == false)
+                    NavManager.NavigateTo("/error");
+            }
+            else
+            {
+                NavManager.NavigateTo("/error");
+            }
+        }catch{ NavManager.NavigateTo("/error"); }
+
+        Domande_ = await Http.GetFromJsonAsync<List<Domanda>>($"/api/Question/GetByTest?id={s}");
+        Opzioni = await Http.GetFromJsonAsync<List<Opzione>>($"/api/Answer/GetAnsByTest?id={s}");
+        for(int i=0;i<Domande_.Count();i++)
+        {
+            Domande_[i].Opzioni = Opzioni.Where(x => x.ProgDomanda == Domande_[i].Progressivo).ToList();
+        }
+    }
+
+
+}
 
 

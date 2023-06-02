@@ -106,19 +106,52 @@
     strong{
         color:white;
     }
+
+    input{
+        
+        visibility:hidden;
+    }
+
+    .card:hover input{
+        visibility:visible;
+        border-radius: 5px;
+        width: 110px;
+        border-color: #240046;
+        border: 2px solid;
+        color: black;
+        background: #fff;
+    }
 </style>
 
 <div class="card wallet">
-    <div class="overlay"></div>
-    <div class="circle">
-        <div><strong>@Title</strong></div>
+    <div class="overlay" @onclick="()=>Clicked.InvokeAsync(sCodice)"></div>
+    <div class="circle" @onclick="()=>Clicked.InvokeAsync(sCodice)">
+        <div @onclick="()=>Clicked.InvokeAsync(sCodice)"><strong>@Title</strong></div>
     </div>
-    <p>@Description</p>
+    @if (box)
+    {
+        <p >
+            <input placeholder="Codice Test" @bind-value=@sCodice/>
+        </p>
+        
+    }else
+    {
+        <p>@Description</p>
+    }
+    
 </div>
 
 @code {
     [Parameter]
+    public EventCallback<string> Clicked{ get; set; }
+
+    [Parameter]
     public string? Title { get; set; }
     [Parameter]
     public string? Description { get; set; }
+    [Parameter]
+    public bool box{ get; set; }
+
+    public string? sCodice;
+
 }

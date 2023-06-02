@@ -61,8 +61,7 @@ namespace Sandwich.Server
                             IdTest = Convert.ToInt32(dr[0]),
                             creatore = Convert.ToString(dr[1]),
                             Aperto = Convert.ToBoolean(dr[2]),
-                            Durata = Convert.ToInt32(dr[3]),
-                            Nome = Convert.ToString(dr[4])
+                            Nome = Convert.ToString(dr[3])
                         });
 
                     }
@@ -161,7 +160,7 @@ namespace Sandwich.Server
 
         public bool AddTest(Test obj)
         {
-            string query = "insert into Tests values(@IdTest,@creatore,@Aperto,@Durata,@Nome)";
+            string query = "insert into Tests values(@IdTest,@creatore,@Aperto,@Nome)";
             using (MySqlConnection con = new MySqlConnection(conn))
             {
                 using (MySqlCommand cmd = new MySqlCommand(query))
@@ -172,7 +171,6 @@ namespace Sandwich.Server
                     cmd.Parameters.AddWithValue("@IdTest", obj.IdTest);
                     cmd.Parameters.AddWithValue("@creatore", obj.creatore);
                     cmd.Parameters.AddWithValue("@Aperto", obj.Aperto);
-                    cmd.Parameters.AddWithValue("@Durata", obj.Durata);
                     cmd.Parameters.AddWithValue("@Nome", obj.Nome);
                       int i = cmd.ExecuteNonQuery();
                     if (i >= 1)
@@ -243,7 +241,7 @@ namespace Sandwich.Server
 
         public bool EditTest(int id, Test obj)
         {
-            string query = "update Tests set IdTest= @IdTest, creatore=@creatore, Aperto=@aperto, Durata=@durata, Name=@name where Id=@id", @creatore,@Aperto,@Durata,@Nome;
+            string query = "update Tests set IdTest= @IdTest, creatore=@creatore, Aperto=@aperto, Name=@name where IdTest=@id";
             using (MySqlConnection con = new MySqlConnection(conn))
             {
                 using (MySqlCommand cmd = new MySqlCommand(query))
@@ -255,8 +253,7 @@ namespace Sandwich.Server
                     cmd.Parameters.AddWithValue("@name", obj.Nome);
                     cmd.Parameters.AddWithValue("@IdTest", obj.IdTest);
                     cmd.Parameters.AddWithValue("@creatore", obj.creatore);
-                    cmd.Parameters.AddWithValue("@aperto", obj.Aperto );
-                    cmd.Parameters.AddWithValue("@durata", obj.Durata ); /*is null ? DBNull.Value : obj.Note)*/
+                    cmd.Parameters.AddWithValue("@aperto", obj.Aperto ); /*is null ? DBNull.Value : obj.Note)*/
                     int i = cmd.ExecuteNonQuery();
                     if (i >= 1)
                     {
@@ -268,6 +265,38 @@ namespace Sandwich.Server
                     }
                 }
             }
+        }
+
+        public List<Tentativo> GetTry()
+        {
+            List<Tentativo> list = new List<Tentativo>();
+            string query = "Select * from Tentativi";
+            using (MySqlConnection con = new MySqlConnection(conn))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    if (con.State == ConnectionState.Closed)
+                        con.Open();
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        list.Add(new Tentativo
+                        {
+                            codiceTentativo = Convert.ToInt32(dr[0]),
+                            utente = Convert.ToString(dr[1]),
+                            dataOraInizio = Convert.ToDateTime(dr[2]),
+                            dataOraFine = Convert.ToDateTime(dr[3]),
+                            risulatato = Convert.ToInt32(dr[4]),
+                            IdTest = Convert.ToInt32(dr[5])
+                        });
+
+                    }
+                }
+            }
+            return list;
         }
     }
 }

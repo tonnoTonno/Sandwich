@@ -1,15 +1,15 @@
 ﻿<style>
-    .form__group {
+    .form__groupa {
         position: relative;
         padding: 20px 0 0;
         width: 100%;
     }
 
-    .form__field {
+    .form__fielda {
         font-family: inherit;
         width: 100%;
         border: none;
-        border-bottom: 2px solid #000000;
+        border-bottom: 2px solid #000;
         outline: 0;
         font-size: 17px;
         color: #000;
@@ -18,63 +18,68 @@
         transition: border-color 0.2s;
     }
 
-        .form__field::placeholder {
+        .form__fielda::placeholder {
             color: transparent;
         }
 
-        .form__field:placeholder-shown ~ .form__label {
+        .form__fielda:placeholder-shown ~ .form__labela {
             font-size: 17px;
             cursor: text;
             top: 20px;
         }
 
-    .form__label {
+    .form__labela {
         position: absolute;
         top: 0;
         display: block;
         transition: 0.2s;
         font-size: 17px;
-        color: #1D267D;
+        color: #000;
         pointer-events: none;
     }
 
-    .form__field:focus {
+    .form__fielda:focus {
         padding-bottom: 6px;
         font-weight: 700;
         border-width: 3px;
-        border-image: linear-gradient(to right, #0C134F, #1D267D);
+        border-image: linear-gradient(to right, #000, #000);
         border-image-slice: 1;
     }
 
-        .form__field:focus ~ .form__label {
+        .form__fielda:focus ~ .form__labela {
             position: absolute;
             top: 0;
             display: block;
             transition: 0.2s;
             font-size: 17px;
-            color: #0C134F;
+            color: #000;
             font-weight: 700;
         }
 
     /* reset input */
-    .form__field:required, .form__field:invalid {
+    .form__fielda:required, .form__fielda:invalid {
         box-shadow: none;
     }
 </style>
-<input type="radio" name="Opzione" required="" @onclick="@ChangeRadio" />
-<div class="form__group field">
-    <input type="input" class="form__field" placeholder="@Sopra" required="" @bind-value=Opzione.Testo >
-    <label for="@Sopra.ToLower()" class="form__label">@Sopra</label>
+<input type="radio" name="Opzione" required="" @onclick="@ChangeRadio"  checked=@CheckCheck()/>
+<div class="form__groupa fielda">
+    <input type="input" class="form__fielda" placeholder="@Sopra" required="" @bind-value=Opzione.Testo >
+    <label for="@Sopra.ToLower()" class="form__labela">@Sopra</label>
 </div>
 @code{
 
-    [Parameter]
-    public Opzione Opzione { get; set; } = new(){OpzioneCorretta=false};
+    [Parameter,EditorRequired]
+    public Opzione Opzione { get; set; } 
     [Parameter,EditorRequired]
     public string? Sopra{ get; set; }
 
     public void ChangeRadio()
     {
         Opzione.OpzioneCorretta = !Opzione.OpzioneCorretta;
+    }
+
+    public string CheckCheck()
+    {
+        return (Opzione.OpzioneCorretta==true) ? "checked" : "";
     }
 }
