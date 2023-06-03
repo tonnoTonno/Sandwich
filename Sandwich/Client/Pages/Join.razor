@@ -8,19 +8,23 @@
 <style>
 </style>
 
-<Bolle left_="50%" Back="home"></Bolle>
+<Bolle left_="50%"></Bolle>
 <body style="position:fixed;height:100%;width: 100%;
         padding: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
         ">
+
     <div style="justify-content: center;margin:-130px 0  auto">
-        <h1>@test?.Nome</h1>
-    @*@foreach (Domanda? d in Domande_)
+        <h1 style="color:white;font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;margin:0 0 auto">@test?.Nome</h1>
+    @if(Domande_ != null)
     {
-        <FormQuiz Question="d" posizione="@TakePosition(d)"></FormQuiz>
-    }*@
+        @foreach (Domanda? d in Domande_)
+        {
+            <FormQuiz Question="d" posizione="@TakePosition(d)"></FormQuiz>
+        }
+    }
     </div>
 </body>
 
@@ -58,6 +62,7 @@
             }
             if(test!=null)
             {
+                Console.WriteLine("pippo");
                 if (test?.Aperto == false)
                     NavManager.NavigateTo("/error");
             }

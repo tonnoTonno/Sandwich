@@ -1,0 +1,56 @@
+﻿<style>
+    .button2 {
+        position: relative;
+        overflow: hidden;
+        height: 3rem;
+        padding: 0 2rem;
+        border-radius: 1.5rem;
+        background: @Color1;
+        background-size: 400%;
+        color: #fff;
+        border: none;
+        width:120px
+    }
+
+        .button2:hover::before {
+            transform: scaleX(1);
+        }
+
+    .button-content2 {
+        position: relative;
+        z-index: 1;
+    }
+
+    .button2::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        width: 100%;
+        height: inherit;
+        border-radius: inherit;
+        background:@Color2 ;
+        transition: all 0.475s;
+    }
+</style>
+<button class="button2" @onclick="@(e=>OnClic.InvokeAsync())">
+    <span class="button-content2">@Contenuto</span>
+</button>
+@code {
+    [Parameter]
+    public string? Contenuto { get; set; }
+
+    [Parameter]
+    public EventCallback<Test> OnClic{ get; set; }
+
+    [Parameter]
+    public string? Color1{ get; set; }
+
+    [Parameter]
+    public string? Color2 { get; set; }
+
+
+
+}

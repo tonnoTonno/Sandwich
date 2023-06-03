@@ -61,9 +61,9 @@
         box-shadow: none;
     }
 </style>
-<input type="radio" name="Opzione" required="" @onclick="@ChangeRadio"  checked=@CheckCheck()/>
+<input type="radio" name="Opzione" required="" @onchange="()=>ChangeRadio()"   checked="@Opzione.Ischecked"/>
 <div class="form__groupa fielda">
-    <input type="input" class="form__fielda" placeholder="@Sopra" required="" @bind-value=Opzione.Testo >
+    <input type="input" class="form__fielda" placeholder="@Sopra" required="" @bind-value=Opzione.Testo  >
     <label for="@Sopra.ToLower()" class="form__labela">@Sopra</label>
 </div>
 @code{
@@ -76,10 +76,7 @@
     public void ChangeRadio()
     {
         Opzione.OpzioneCorretta = !Opzione.OpzioneCorretta;
+        Opzione.Ischecked = (Opzione.OpzioneCorretta == true) ? "checked" : "";
     }
 
-    public string CheckCheck()
-    {
-        return (Opzione.OpzioneCorretta==true) ? "checked" : "";
-    }
 }

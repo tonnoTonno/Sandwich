@@ -95,11 +95,13 @@
         top: calc(50% - 2px);
     }
 </style>
-<button class="icon-btn add-btn" type="button" @onclick=e>
+<button class="icon-btn add-btn" type="button" @onclick=@e style="visibility:@vis">
     <div class="@btp"></div>
     <div class="btn-txt" style="color:white">@text</div>
 </button>
 @code {
+    [Parameter]
+    public string vis{ get; set; }
     [Parameter]
     public EventCallback e{ get; set; }
     [Parameter]

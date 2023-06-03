@@ -41,7 +41,9 @@ namespace Sandwich.Shared
         public string? Testo { get; set; }
         public bool? OpzioneCorretta { get; set; }
         public int? ProgDomanda { get; set; }
-        public int? IdTest { get;set; }
+        public int? IdTest { get; set; }
+        public string? DinamicStyle { get; set; }
+        public string? Ischecked{get;set;}
 
     }
 
@@ -51,7 +53,7 @@ namespace Sandwich.Shared
         public string? Consegna { get; set; }
         public int? IdTest { get; set; }
 
-        public List<Opzione> Opzioni { get; set; }
+        public List<Opzione> Opzioni { get; set; } = new();
 
     }
 

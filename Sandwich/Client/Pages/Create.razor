@@ -17,6 +17,7 @@
         width: 90vw;
         margin: 2rem auto;
         background: transparent;
+        
     }
 
     .heading__text {
@@ -78,17 +79,20 @@
 <Bolle left_="50%" ></Bolle>
 <body style="overflow-y:scroll;position:fixed;height:100%;margin-top:-150px">
     <div class="heading" style="margin-top:30px;display: flex;justify-content: center;z-index:2;margin-left:auto">
-        <button id="back" @onclick="()=>VaiA(1)">ᐊ</button>
-        <input class="heading__text" placeholder="Inserire Nome" style="border:hidden;background:transparent;" @bind-value="@QuizName" />
+        <button id="back" @onclick="()=>VaiA(1)" style="font-size:80px">ᐊ</button>
+        <h1 style="color:white;font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;margin:0 0 auto;font-size:80px">Crea</h1>
+    </div>
+    <div style="margin:0 auto;display: flex;justify-content: center;">
+        <input class="heading__text" placeholder="Inserire Nome" style="border:hidden;background:transparent;color:white;font-family:Impact, Haettenschweiler, 'Arial Narrow', sans-serif;margin:0 auto" @bind-value="@QuizName" />
     </div>
     <div class="container" style="display: flex;justify-content: center;">
         <div style="justify-content: center;">
             @foreach (Domanda d in Domande)
             {
-                <FormQuestion Opzioni=@d.Opzioni Domanda=@d RemoveDomanda="@RemoveDomanda" RemoveVisibility="@TakeVisibility()" over="@TakeOver(d,Domande)"></FormQuestion>
+                <FormQuestion Domanda=@d RemoveDomanda="@RemoveDomanda" RemoveVisibility="@TakeVisibility()" over="@TakeOver(d,Domande)"></FormQuestion>
             }
             <div style="display:flex;justify-content: center;" >
-                <Plus_Minus btp="add-icon" text="Aggiungi Domanda" e="AddQuestion"></Plus_Minus>
+                <Plus_Minus btp="add-icon" text="Aggiungi Domanda" e="@AddQuestion"></Plus_Minus>
             </div>
             <div>
                 <button class="submit" type="submit" @onclick="AddQuiz">Conferma</button>
@@ -162,8 +166,7 @@
                 TakeIdQuiz();
                 Test Quizzettone = new Test() { Aperto = false, IdTest = TestId, Nome = QuizName, creatore = MailCreatore};
                 HttpResponseMessage response = await Http.PostAsJsonAsync("/api/Test", Quizzettone);
-                Console.Write(response);
-
+                
                 foreach (Domanda a in Domande)
                 {
                     a.IdTest = TestId;

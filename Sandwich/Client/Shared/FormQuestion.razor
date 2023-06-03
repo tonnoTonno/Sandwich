@@ -126,7 +126,7 @@
     <!-- Quiz section -->
     <div class="quiz" style="border:2px solid; border-radius:50px; padding:25px;background:#240046;  width:100%">
         <form class="quiz-form">
-            <div class="quiz-form__quiz">
+            <div class="quiz-form__quiz" >
                 <p class="quiz-form__question">
                     <div style="visibility:@RemoveVisibility;margin-bottom:15px">
                         <Remove e="()=>RemoveQuest(Domanda)"></Remove>
@@ -134,20 +134,18 @@
                     <InputQuestion_ Domanda="@Domanda" Sopra="@over"></InputQuestion_>
                 </p>
 
-                @foreach (Opzione o in Opzioni)
+                @foreach (Opzione o in Domanda.Opzioni)
                 {
                     <label class="quiz-form__ans" style="width:100%">
                         <span></span>
-                        <InputAnswer Opzione="@o" Sopra="@TakeOver(o,Opzioni)"></InputAnswer>
+                        <InputAnswer Opzione="@o" Sopra="@TakeOver(o,Domanda.Opzioni)"></InputAnswer>
                         <b></b>
-                        <div style=" display: flex;justify-content: center; visibility: @TakeVisibility()" >
-                            <Plus_Minus btp="subtract-icon" text="Rimuovi Risposta" e="()=>Remove(o)"></Plus_Minus>
-                        </div>
+                        <Plus_Minus btp="subtract-icon" text="Rimuovi Risposta" e="()=>Remove(o)" vis="TakeVisibility()"></Plus_Minus>
                     </label>
                 }
 
-                <div style="display: flex;justify-content: center;" @onclick="AddCount">
-                    <Plus_Minus btp="add-icon" text="Aggiungi Risposta"></Plus_Minus>
+                <div style="display: flex;justify-content: center;" >
+                    <Plus_Minus btp="add-icon" text="Aggiungi Risposta" e="()=>AddCount()"></Plus_Minus>
                 </div>
 
             </div>
@@ -156,11 +154,9 @@
 </div>
 
 @code {
-    [Parameter,EditorRequired]
+    [Parameter]
     public string? over{ get; set; }
 
-    [Parameter]
-    public List<Opzione> Opzioni { get; set; } = new List<Opzione>() { };
 
     [Parameter]
     public Domanda Domanda { get; set; } = new();
@@ -170,6 +166,11 @@
     [Parameter]
     public EventCallback<Domanda> RemoveDomanda { get; set; }
 
+    public void onCambiamentoSelezione()
+    {
+
+    }
+
     public string TakeOver(Opzione o,List<Opzione> l)
     {
         return "Risposta " + ((l.IndexOf(o) + 1).ToString());
@@ -177,18 +178,19 @@
 
     public string TakeVisibility()
     {
-        return (Opzioni.Count == 1) ? "hidden" : "visible";
+        return (Domanda.Opzioni.Count == 1) ? "hidden" : "visible";
     }
 
     public void AddCount()
     {
-        var opt = new Opzione() {};
-        Opzioni.Add(opt);
+        var opt = new Opzione() { OpzioneCorretta = false,Ischecked="" };
+    Domanda.Opzioni.Add(opt);
+
     }
 
     public async void Remove(Opzione o)
     {
-        Opzioni.Remove(o);
+        Domanda.Opzioni.Remove(o);
     }
     public async void RemoveQuest(Domanda a)
     {
@@ -196,6 +198,6 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        AddCount();
+        Domanda.Opzioni = new();
     }
 }
